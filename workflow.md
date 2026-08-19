@@ -17,7 +17,7 @@ Every table in this workstream, which ticket drives it, its source RFC, and what
 
 | Table | Driving Ticket | Source RFC | Depends On |
 |---|---|---|---|
-| `BLD_building_assetpoint` | TASK0326632 (see `bld_asset_point.md`) | `changes/Add fields to Building Assetpoint.xlsx` | Nothing, but gates the row below |
+| `BLD_building_assetpoint` | TASK0326632 (see `work/bld_asset_point/bld_asset_point.md`) | `changes/Add fields to Building Assetpoint.xlsx` | Nothing, but gates the row below |
 | `BLD_BUILDING` (field deletions) | *no ticket number found yet* | `changes/Delete fields in Building table.xlsx` | **`BLD_building_assetpoint`'s `NAMESTATUS` / `NAMEAPRDTE` adds (TASK0326632) must land first.** That RFC's own notes column says, verbatim, "Add field to `BLD_building_assetpoint` and then delete" for both fields. Its other three deletes (`INSTYRCONF`, `SIZE1UNIT`, `SIZE1CONF`, `DISPOSAL`) carry no such dependency, they already exist on assetpoint independently. |
 | `BLD_building_polygon` | TASK0320358 (views) → TASK0320365 (deletes), see `tickets/TASK0320365.md` | `R:\...\Building Polygons\Changes to BLD_building_polygon feature class.xlsx` (not yet in this repo) | TASK0320365's polygon deletes are already done, ahead of the rest of that ticket |
 | `BLD_BUILDING_USE` | TASK0320358 (views) → TASK0320365 (deletes + domain values), see `tickets/TASK0320365.md` | `R:\...\Building Use\Delete fields in Building Use table.xlsx` (not yet in this repo) | TASK0320358 views must land first |
@@ -30,7 +30,7 @@ Every table in this workstream, which ticket drives it, its source RFC, and what
 
 ## TASK0326632 – BLD_building_assetpoint
 
-**Now tracked in its own file: `bld_asset_point.md`** (moved out since this became the priority workstream). Ticket record (ServiceNow fields, full description) in `tickets/TASK0326632.md`. This file keeps only the ticket summary row above and the related/dependent tickets below.
+**Now tracked in its own file: `work/bld_asset_point/bld_asset_point.md`** (moved out since this became the priority workstream). Ticket record (ServiceNow fields, full description) in `tickets/TASK0326632.md`. This file keeps only the ticket summary row above and the related/dependent tickets below.
 
 ---
 
