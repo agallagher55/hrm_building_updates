@@ -144,5 +144,5 @@ Change details from the 8 source spreadsheets are broken out into the following 
 - No environment-specific tracking yet (SDE Dev/QA/Prod, file GDB) for any of these 8. Will need same per-environment verification pattern used on prior tickets.
 ## Related Prior Work (for reference)
  
-See `workflow.md` for status on TASK0326632, TASK0320358, and TASK0320365, which cover `BLD_building_assetpoint`, `BLD_building_polygon`, `BLD_BUILDING_USE`, and `BLD_Building_Symbols`.
+See `bld_asset_point.md` for status on TASK0326632 (`BLD_building_assetpoint`, now the priority workstream), and `workflow.md` for TASK0320358 and TASK0320365, which cover `BLD_building_polygon`, `BLD_BUILDING_USE`, and `BLD_Building_Symbols`.
  
