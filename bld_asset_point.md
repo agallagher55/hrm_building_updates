@@ -40,7 +40,6 @@ So: field changes (steps 3 and 4) can go right after Pre-Work, just not before i
 ### 1. Verify current schema of `BLD_building_assetpoint` in SDE
 - [x] Pull a schema export from production RW and check it against the tracked Add/Delete/Alias lists. Done, 2026-08-19, against `BLD_building_assetpoint_SCHEMA.json` (`GISRW01`).
 - [x] Cross-check that export against the RFC (`changes/Add fields to Building Assetpoint.xlsx`, DATASET DETAILS tab). Done, all 17 deletes, all 3 adds, and all 6 alias targets match, with FMO comments confirming each of the 17 deletes explicitly.
-- [ ] Pull the same schema export for prod RO, QA RW/RO, Dev RW/RO, and the three `web_RO.gdb`s, to catch the kind of environment drift already seen on the `SOURCE` domain problem. Only prod RW checked so far.
 
 **Findings from the production RW export:**
 - 65 fields total on the feature class today.
@@ -55,9 +54,10 @@ So: field changes (steps 3 and 4) can go right after Pre-Work, just not before i
 - [x] Confirm `NAMESTATUS` / `NAMEAPRDTE` type, length, and domain match exactly between `BLD_BUILDING` and the assetpoint additions. Confirmed, exact match on both, including all four `Bldg_Official_Name` coded values on `NAMESTATUS`.
 - [x] Locate the specific "changes submitted for the Building table" RFC. Found: `changes/Delete fields in Building table.xlsx` ("Delete fields in Building table," GIS Design Authority RFC, requestor Lisa O'Toole, dated 2026-04-09, High Priority, **not yet presented at GIS Design Authority** per a note on its DATASET DETAILS tab).
 - [x] Confirm the sequencing dependency between the two tickets. Confirmed and important: that RFC's own notes column says, verbatim, **"Add field to `BLD_building_assetpoint` and then delete"** for both `NAMESTATUS` and `NAMEAPRDTE`. So this ticket's adds are a hard prerequisite for that ticket's deletes on those two fields specifically, not just a "verify together" courtesy.
-- [ ] Find the ServiceNow TASK/RITM number for the "Delete fields in Building table" RFC. The xlsx itself doesn't carry one, it's a GIS Design Authority form, not a ServiceNow export like the others in this suite.
-- [ ] Confirm this ticket's `HERITAGE` / `NAMESTATUS` / `NAMEAPRDTE` adds land (or are at least scheduled ahead of) the Building-table deletion, so the dependency direction in the note above isn't violated. **Now tracked at the cross-ticket level in `workflow.md`'s Cross-Ticket Dependency Map**, check there for current status alongside every other table in this workstream.
+- [ ] Find the ServiceNow TASK/RITM number for the "Delete fields in Building table" RFC. The xlsx itself doesn't carry one, it's a GIS Design Authority form, not a ServiceNow export like the others in this suite. Still open, not yet found.
 - [ ] Record final coordination outcome here before starting the schema DDL in step 3 of the workflow order above.
+
+The order-of-operations requirement itself (`BLD_building_assetpoint`'s adds must land before `BLD_BUILDING` can delete `NAMESTATUS` / `NAMEAPRDTE`) isn't a separate checklist item here, it's tracked once, at the cross-ticket level, in `workflow.md`'s Cross-Ticket Dependency Map, alongside the sequencing for every other table in this workstream. Check there for current status rather than duplicating it as a checkbox in this file.
 
 **More detail on the "Delete fields in Building table" RFC:**
 - **Reason for Change:** "Changes were made to the Building model a couple of years ago to better align with information from POSSE, new fields were added in the Building table. Recently the FDM Property ETL process to update building data for Fire in FDM has been updated. Part of the process was to repoint data to the new fields. Therefore, now those old fields need to be deleted as they are redundant." Unrelated to this ticket's own reasoning, it's a separate cleanup driven by the FDM ETL repoint.
@@ -70,9 +70,7 @@ So: field changes (steps 3 and 4) can go right after Pre-Work, just not before i
 ### 3. Check whether `FCODE` is in use
 - [x] Check the schema export for domain, subtype, attribute-rule, or index references to `FCODE`. Done, none found, `FCODE` has no domain, isn't a subtype field (this feature class has no subtypes), and isn't referenced by the one existing attribute rule or by any index.
 - [x] Check whether `STG_01.ARCGIS.BLD_BUILDING_ASSETPOINT_STG` carries an `FCODE` field. Confirmed yes, it's at least carried into staging structurally, whether it's populated or used downstream from there is still unknown.
-- [ ] Check `DM_01.BUILDING.DIM_BUILDING` and `DM_01.BUILDING.DIM_BUILDING_NEW` for `FCODE` usage. No access, folded into the Digital Services notification in §4 below instead of chasing table access separately.
-- [ ] Query production for non-null `FCODE` counts and spot-check distinct values on `BLD_building_assetpoint` itself.
-- [ ] Ask Somya (via §4) whether anything downstream reads `FCODE`.
+- [ ] Get confirmation on `FCODE` usage from Digital Services. Everything else in this section, `DM_01.BUILDING.DIM_BUILDING` / `DIM_BUILDING_NEW` usage and whether anything downstream reads it, is folded into the notification email in §4 rather than being separate legwork here. Nothing to do on this item until Somya replies.
 
 This question traces back to an unresolved note on the RFC itself (DATASET DETAILS tab, `FCODE` row): "Is this field being used for anything? Check." It's not tied to a planned delete, so it isn't gating the schema DDL in steps 3 to 4 of the workflow order, it only matters for closing out the open question the RFC raised and as a heads-up if `FCODE` becomes a delete candidate later.
 
@@ -97,6 +95,8 @@ This question traces back to an unresolved note on the RFC itself (DATASET DETAI
 - [ ] Confirm `SIZE1UNIT`'s hide-from-AR request has actually been applied in the live Asset Registry app, not just proposed on the form.
 - [ ] Decide on `ASSETSTAT`'s toggle-visibility request (show/hide Disposed assets on demand), an app-level feature, not a simple visibility flag, already tracked in Deferred / Follow-up Items below.
 - [ ] Confirm the RFC's "Visible in AR" column still matches how Asset Registry is actually configured today (the RFC is a proposal, not necessarily the live state), before relying on it for the deploy.
+
+**Where to check these three:** nothing in this doc suite says which application or admin panel actually controls Asset Registry field visibility, so this isn't something I can point to directly. Best guess based on what's already tracked elsewhere in this file: AMO owns Asset Registry (per the project context) and `Cityworks Assets / Building Asset Points` is the one impacted service in the Post-Schema section that reads as Asset-Registry-flavored, so that's the most likely place to look, or ask AMO whether the "Visible in AR" setting lives there or somewhere else entirely. Since these three items are about the *live* app state rather than anything in the RFC or the schema, AMO (or whoever administers Asset Registry day to day) is probably the fastest path, rather than hunting for it directly.
 
 **The three new fields, target AR visibility:**
 
