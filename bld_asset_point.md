@@ -84,18 +84,49 @@ This question traces back to an unresolved note on the RFC itself (DATASET DETAI
 
 **Recipients (per Alex, 2026-08-19):** To: Blair Jeffers, Mukesh Maji, Andrea Assanuma, Somya Agarwal. Cc: Michael Potter, Lisa O'Toole. Broader distribution than just Somya, subject line: "Upcoming field changes to BLD_building_assetpoint (TASK0326632)". Scheduled for Thu, Aug 20 at 8:30 AM, not yet confirmed sent.
 
-- [x] Draft the notice. Done, 2026-08-19, draft covers the full field list, the ETL objects, and the `FCODE` question below. Recipients confirmed above, not yet sent.
-- [ ] Send the notice, referencing TASK0326632, to the Digital Services distribution listed above. Somya is part of **Digital Services**, not Data Services, that's the ServiceNow assignment group on this ticket (`Data Services Support`), a different thing from her team.
-- [ ] List the exact fields in the notice:
+- [x] Draft the notice. Done, 2026-08-19.
+- [ ] Send the notice, referencing TASK0326632, to the Digital Services distribution listed above. Somya is part of **Digital Services**, not Data Services, that's the ServiceNow assignment group on this ticket (`Data Services Support`), a different thing from her team. About to send, per Alex, 2026-08-19, not yet confirmed sent.
+- [x] List the exact fields in the notice. Adds and deletes included in full; alias-only changes and domain changes list trimmed down to just the domain changes, alias-only changes left out of the final version, a reasonable call since ETL reads by field name, not alias.
   - **Adds:** `HERITAGE`, `NAMESTATUS`, `NAMEAPRDTE`
   - **Deletes:** all 17 fields in the Delete Fields section below
-  - **Alias-only changes:** `INSTYRCONF`, `INSTDATE`, `INSTCS`, `RMLIFE`, `BASELIFE`, `OWNER`
   - **Domain changes:** `SOURCE` reassignment, plus the pending `FMO` / `FDC` additions to `Bldg_FC_source`
-- [ ] Include the `FCODE` question from §3: ask her to check `DM_01.BUILDING.DIM_BUILDING` and `DM_01.BUILDING.DIM_BUILDING_NEW` for `FCODE` usage, and whether anything downstream reads it.
-- [ ] Call out the ETL objects that will need matching updates, confirmed per the RFC's IMPACTS tab: `STG_01.ARCGIS.BLD_BUILDING_ASSETPOINT_STG`, `DM_01.BUILDING.DIM_BUILDING`, `DM_01.BUILDING.DIM_BUILDING_NEW`.
-- [ ] Ask how much lead time she needs before deployment, so the notice goes out early enough rather than the day of.
-- [ ] Confirm whether her team maintains anything downstream of this table beyond the ETL objects already listed (e.g. a CSV feed or dashboard, similar to the `buildingdetails.csv` note for a different table in `workflow.md`).
+- [x] Include the `FCODE` question from §3. Included.
+- [x] Call out the ETL objects that will need matching updates, confirmed per the RFC's IMPACTS tab: `STG_01.ARCGIS.BLD_BUILDING_ASSETPOINT_STG`, `DM_01.BUILDING.DIM_BUILDING`, `DM_01.BUILDING.DIM_BUILDING_NEW`. Included.
+- [ ] ~~Ask how much lead time she needs before deployment~~ Left out of the final version. Not blocking, worth asking separately once QA wraps up and Prod timing needs to be set.
+- [x] Confirm whether her team maintains anything downstream of this table beyond the ETL objects already listed. Included.
 - [ ] Log the date the notice was sent, and any response, here once done.
+
+**Final text (about to send, 2026-08-19):**
+
+> Hey guys,
+>
+> Just wanted to give a heads-up on some upcoming schema changes to BLD_building_assetpoint (TASK0326632) that may touch some fields your team's ETL processes read from.
+> I'm planning to deploy to Dev this week and QA sometime next week (week of August 24).
+>
+> Fields being added:
+> - HERITAGE
+> - NAMESTATUS
+> - NAMEAPRDTE
+>
+> Fields being deleted (17 total):
+> - REPLCSTOTL, MAT, MATCONF, LANDID, ASSETRAW, ASSETDESC, CRIT, CRITCONF, RMLIFECONF, INSTCSCONF, REPLCSRA, REPLRACONF, REPLCSCONF, TCACAT, PERFRMRA, PERFRMCONF, PROFCNCAT
+>
+> Domain changes:
+> - SOURCE reassigned from Bldg_FC_source to Bldg_TBL_source
+> - Bldg_FC_source getting two new codes added: FMO and FDC
+>
+> I think these tables have already been identified as being impacted:
+> - STG_01.ARCGIS.BLD_BUILDING_ASSETPOINT_STG, DM_01.BUILDING.DIM_BUILDING, and DM_01.BUILDING.DIM_BUILDING_NEW.
+>
+> A few things I wanted to check with you directly:
+>
+> 1. Can you confirm none of the 17 fields being deleted above are referenced in those three objects? Want to make sure nothing breaks on your end when they're dropped.
+> 2. Separately, do you know if FCODE is used anywhere downstream, on DM_01.BUILDING.DIM_BUILDING, DIM_BUILDING_NEW, or in any dashboard or report your team maintains? It's an existing field I'm not touching in this round.
+> 3. Is there anything else downstream of BLD_building_assetpoint your team maintains beyond what's listed above, a CSV feed or dashboard, for example, that I should know about before deploying?
+>
+> Let me know if you have questions.
+>
+> Thanks!
 
 ### 5. Asset Registry visibility (reference only, not a database concern)
 Asset Registry visibility is controlled at the service layer, not in the geodatabase schema (confirmed earlier, there's no AR-visibility flag anywhere in the schema export). Out of scope for database work, no live-app confirmation needed here.
