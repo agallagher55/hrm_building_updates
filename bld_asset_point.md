@@ -40,6 +40,7 @@ So: field changes (steps 3 and 4) can go right after Pre-Work, just not before i
 ### 1. Verify current schema of `BLD_building_assetpoint` in SDE
 - [x] Pull a schema export from production RW and check it against the tracked Add/Delete/Alias lists. Done, 2026-08-19, against `BLD_building_assetpoint_SCHEMA.json` (`GISRW01`).
 - [x] Cross-check that export against the RFC (`changes/Add fields to Building Assetpoint.xlsx`, DATASET DETAILS tab). Done, all 17 deletes, all 3 adds, and all 6 alias targets match, with FMO comments confirming each of the 17 deletes explicitly.
+- [x] Check for copy-paste inconsistencies on the Delete Fields list, like the `PERFRMRA` one flagged for a different ticket in `outstanding_questions.md`. None found on this form, its `PERFRMRA` row reads cleanly: "AMO has suggested this field be deleted" / "Yes, this can be deleted."
 
 **Findings from the production RW export:**
 - 65 fields total on the feature class today.
@@ -87,31 +88,18 @@ This question traces back to an unresolved note on the RFC itself (DATASET DETAI
 - [ ] Confirm whether her team maintains anything downstream of this table beyond the ETL objects already listed (e.g. a CSV feed or dashboard, similar to the `buildingdetails.csv` note for a different table in `workflow.md`).
 - [ ] Log the date the notice was sent, and any response, here once done.
 
-### 5. Confirm Asset Registry visibility settings
-- [x] Pull the "Visible in AR" column from the RFC (`changes/Add fields to Building Assetpoint.xlsx`, DATASET DETAILS tab). Done.
-- [x] Confirm none of the 17 fields on the Delete Fields list are currently AR-visible. Confirmed, all `No` (or blank, for `ASSETRAW`, which has no value entered either way).
-- [x] Confirm target AR visibility for the 3 new fields. Confirmed, all `Yes` (`HERITAGE`, `NAMESTATUS`, `NAMEAPRDTE`).
-- [x] Check for copy-paste inconsistencies like the `PERFRMRA` one flagged for a different ticket in `outstanding_questions.md`. None found on this form, its `PERFRMRA` row reads cleanly: "AMO has suggested this field be deleted" / "Yes, this can be deleted."
-- [ ] Confirm `SIZE1UNIT`'s hide-from-AR request has actually been applied in the live Asset Registry app, not just proposed on the form.
-- [ ] Decide on `ASSETSTAT`'s toggle-visibility request (show/hide Disposed assets on demand), an app-level feature, not a simple visibility flag, already tracked in Deferred / Follow-up Items below.
-- [ ] Confirm the RFC's "Visible in AR" column still matches how Asset Registry is actually configured today (the RFC is a proposal, not necessarily the live state), before relying on it for the deploy.
+### 5. Asset Registry visibility (reference only, not a database concern)
+Asset Registry visibility is controlled at the service layer, not in the geodatabase schema (confirmed earlier, there's no AR-visibility flag anywhere in the schema export). Out of scope for database work, no live-app confirmation needed here.
+- [x] Pull the "Visible in AR" column from the RFC (`changes/Add fields to Building Assetpoint.xlsx`, DATASET DETAILS tab), as due-diligence context for the deletes below. Done.
+- [x] Confirm none of the 17 fields on the Delete Fields list are currently AR-visible, so the database deletes don't remove anything the service currently shows. Confirmed, all `No` (or blank, for `ASSETRAW`, which has no value entered either way).
 
-**Where to check these three:** nothing in this doc suite says which application or admin panel actually controls Asset Registry field visibility, so this isn't something I can point to directly. Best guess based on what's already tracked elsewhere in this file: AMO owns Asset Registry (per the project context) and `Cityworks Assets / Building Asset Points` is the one impacted service in the Post-Schema section that reads as Asset-Registry-flavored, so that's the most likely place to look, or ask AMO whether the "Visible in AR" setting lives there or somewhere else entirely. Since these three items are about the *live* app state rather than anything in the RFC or the schema, AMO (or whoever administers Asset Registry day to day) is probably the fastest path, rather than hunting for it directly.
+**The three new fields, AR visibility per the RFC (informational, whoever owns the service sets this, not a database step):**
 
-**The three new fields, target AR visibility:**
-
-| Field | Target AR Visibility | Notes |
-|---|---|---|
-| `HERITAGE` | Yes | No FMO comment on the row either way |
-| `NAMESTATUS` | Yes | FMO: "Yes, Add new field" |
-| `NAMEAPRDTE` | Yes | FMO: "Yes, Add new field" |
-
-**Fields with an open AR-visibility question beyond simple Yes/No:**
-
-| Field | Current AR Visibility | Note from the RFC |
-|---|---|---|
-| `SIZE1UNIT` | No | "Can we hide this field in Asset Registry? The field already says Total Sqft so we don't need a separate field identifying the unit of measure." |
-| `ASSETSTAT` | Yes | "Facilities would like to see Disposed asset in AR, is there a way to be able to turn on/off the asset status so it is not automatically visible but they do have the ability to click them on if they need to see disposed?" |
+| Field | AR Visibility per RFC |
+|---|---|
+| `HERITAGE` | Yes |
+| `NAMESTATUS` | Yes |
+| `NAMEAPRDTE` | Yes |
 
 ## Domain / Field Fixes (Completed June 7, 2026)
 *Driving ticket: TASK0326632 (carryover cleanup, predates the Add/Delete/Alias/Domain items below)*
