@@ -7,8 +7,24 @@
 | TASK0326632 | `BLD_building_assetpoint` | Jul 10, 2026 | 🔵 In Progress |
 | TASK0320358 | `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols` (view updates) | Jan 30, 2026 ⚠️ | ⚪ Not Started |
 | TASK0320365 | `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`, `BLD_BUILDING_CIVIC_LINK` (field/domain/table deletions) | Jan 30, 2026 ⚠️ | 🟡 Blocked on TASK0320358 |
+| *(no ticket number)* | `BLD_BUILDING` (field deletions) | *(not tracked)* | ⚪ Not Started |
 
-> **Sequencing:** TASK0320358 (view updates) must be completed before TASK0320365 (field/domain/table deletions) can proceed. The `BLD_building_polygon` field deletions in TASK0320365 are the only exception — those are already done.
+---
+
+## Cross-Ticket Dependency Map
+
+Every table in this workstream, which ticket drives it, its source RFC, and what it's blocked by or blocking. Kept here as the single place to check sequencing before starting work on any of these tables.
+
+| Table | Driving Ticket | Source RFC | Depends On |
+|---|---|---|---|
+| `BLD_building_assetpoint` | TASK0326632 (see `bld_asset_point.md`) | `changes/Add fields to Building Assetpoint.xlsx` | Nothing, but gates the row below |
+| `BLD_BUILDING` (field deletions) | *no ticket number found yet* | `changes/Delete fields in Building table.xlsx` | **`BLD_building_assetpoint`'s `NAMESTATUS` / `NAMEAPRDTE` adds (TASK0326632) must land first.** That RFC's own notes column says, verbatim, "Add field to `BLD_building_assetpoint` and then delete" for both fields. Its other three deletes (`INSTYRCONF`, `SIZE1UNIT`, `SIZE1CONF`, `DISPOSAL`) carry no such dependency, they already exist on assetpoint independently. |
+| `BLD_building_polygon` | TASK0320358 (views) → TASK0320365 (deletes), see `tickets/TASK0320365.md` | `R:\...\Building Polygons\Changes to BLD_building_polygon feature class.xlsx` (not yet in this repo) | TASK0320365's polygon deletes are already done, ahead of the rest of that ticket |
+| `BLD_BUILDING_USE` | TASK0320358 (views) → TASK0320365 (deletes + domain values), see `tickets/TASK0320365.md` | `R:\...\Building Use\Delete fields in Building Use table.xlsx` (not yet in this repo) | TASK0320358 views must land first |
+| `BLD_Building_Symbols` | TASK0320358 (views) → TASK0320365 (domain values), see `tickets/TASK0320365.md` | `R:\...\Building Symbols\Building Symbol Fcode Changes.xlsx` (not yet in this repo) | TASK0320358 views must land first |
+| `BLD_BUILDING_CIVIC_LINK` | TASK0320365 (table deletion), see `tickets/TASK0320365.md` | `R:\...\Building Civic Link\Delete Building Civic Link table.xlsx` (not yet in this repo) | Full impact inventory (EMO views/services) before the table itself can be dropped |
+
+> **Sequencing, in short:** TASK0326632's assetpoint adds must land before `BLD_BUILDING` can delete `NAMESTATUS` / `NAMEAPRDTE`. TASK0320358 (view updates) must be completed before TASK0320365 (field/domain/table deletions) can proceed, the `BLD_building_polygon` field deletions in TASK0320365 are the only exception, those are already done.
 
 ---
 
@@ -83,38 +99,7 @@
 
 ## TASK0320365 – Multi-Table Cleanup *(blocked on TASK0320358)*
 
-### BLD_building_polygon – Field Deletions
-- [x] Delete `FOOT_SQFT` ✅ all envs confirmed (Jun 15 log)
-- [x] Delete `FLOORS` ✅ all envs confirmed (Jun 15 log)
-- [x] Delete `SCALE` ✅ all envs confirmed (Jun 15 log)
-
-### BLD_BUILDING_USE – Field Deletions
-- [ ] Delete `WEBURL`
-- [ ] Delete `FIREALARMS`
-- [ ] Delete `COMBUSCONS`
-- [ ] Delete `LICENS_LIQ`
-
-### Domain Value Deletions
-- [ ] `Bldg_BLRC_uses` – remove `PRIVATE CLUB`, `SOCIETY HALL`
-- [ ] `Bldg_BLRS_uses` – remove `BACKYARD SUITE`, `MOBILE HOME`, `MULTI-UNIT DWELLING`, `SINGLE UNIT DWELLING`, `TOWNHOUSE`, `TWO UNIT DWELLING`
-- [ ] `Bldg_BLCM_uses` – remove `RADIO STATION`, `TELEVISION STATION`
-- [ ] `Bldg_BLID_uses` – remove `MILL`
-- [ ] `Bldg_BLIT_uses` – remove `DERELICT/ABANDONED`, `UNDER CONSTRUCTION`, `VACANT`
-- [ ] `Bldg_symbol_fcode` – remove `BLISPSND`, `BLISPO` ⚠️ script prepared but `TODO: Incomplete`; only targeted prod_rw; no log confirming completion
-
-### BLD_BUILDING_CIVIC_LINK – Pre-Deletion Impact Prep
-- [ ] Confirm full inventory of EMO views and services that reference this table
-- [ ] Coordinate with Somya – Building Details ETL and dashboard updates
-- [ ] Update/remove `BuildingData FireInspections / Building Civic Link` service
-- [ ] Drop `BLD_BUILDING_CIVIC_LINK_EVW` enterprise view
-- [ ] Update Building Report
-
-### BLD_BUILDING_CIVIC_LINK – Table Deletion
-- [ ] Delete `BLD_BUILDING_CIVIC_LINK` table (after all above impacts resolved)
-
-### Post-Deletion Cleanup
-- [ ] Update CMDB to reflect deleted table and fields
-- [ ] Update SDE Metadata for affected feature classes
+**Now tracked in its own file: `tickets/TASK0320365.md`** (full ServiceNow description, source RFC paths per component, and the actionable checklist). This file keeps only the ticket summary row and the dependency map above.
 
 ---
 
