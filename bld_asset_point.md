@@ -61,12 +61,20 @@ The RFC (`changes/Add fields to Building Assetpoint.xlsx`, FORM tab) confirms th
 >
 > **Reason for Change:** "As part of the clean up of fields in the Building table, there are several fields that are duplicated in the building assetpoints. Previously there was a script to keep the datasets in sync but it was cumbersome so it was removed. There are some fields currently in the building table to keep track of the official name of the HRM owned buildings in the building table that make more sense to move over to the building assetpoint. These same fields are already associated to bridge and recreation assets."
 
-So this is specifically about `NAMESTATUS` and `NAMEAPRDTE`: they already exist on "the Building table" today, a sync script used to keep the two datasets aligned but was removed as too cumbersome, and the fix here is to give `BLD_building_assetpoint` its own copy of those fields (the same pattern already used for bridge and recreation assets), not to re-sync them. Which table is not named. Still to do:
-- Which table (`BLD_BUILDING` or `BLD_BUILDING_USE`) is not confirmed. Open the "changes submitted for the Building table" RFC referenced above, it's a separate form from this one, and find it in `R:\ICT\ICT GIS\GIS Design Authority\Change Requests\`.
-- Ask Lisa O'Toole for that RFC/ticket number, or check whether it's actually the TASK0320358 / TASK0320365 work already tracked in `workflow.md` (those cover `BLD_BUILDING_USE`).
-- Confirm with Erin Covill (data custodian) that `NAMESTATUS` and `NAMEAPRDTE`'s type, length, and domain on the Building table match what's specified here (`NAMESTATUS`: Text, 1, domain `Bldg_Official_Name`; `NAMEAPRDTE`: Date), so the assetpoint copy is a true match, not a near-match.
-- Confirm there's no expectation of an ongoing sync between the two copies going forward, since the RFC explicitly says the old sync script was removed for being cumbersome; if that's still the intent, no attribute rule or ETL job should be built to keep them in sync.
+So this is specifically about `NAMESTATUS` and `NAMEAPRDTE`: they already exist on "the Building table" today, a sync script used to keep the two datasets aligned but was removed as too cumbersome, and the fix here is to give `BLD_building_assetpoint` its own copy of those fields (the same pattern already used for bridge and recreation assets), not to re-sync them.
+
+**Which table: confirmed `BLD_BUILDING`.** Verified against schema exports for both candidates, pulled from production, 2026-08-19:
+- `SDEADM.BLD_BUILDING` has both `NAMESTATUS` and `NAMEAPRDTE`. `SDEADM.BLD_BUILDING_USE` has neither, so it's ruled out.
+- The field definitions match exactly what's specified for the assetpoint copy: `NAMESTATUS` is String, length 1, domain `Bldg_Official_Name` with the same four coded values (Administrative, Not Applicable, Commemorative, Naming Rights) on both tables. `NAMEAPRDTE` is Date on both. No drift, the assetpoint additions are a true match, not a near-match.
+- `BLD_BUILDING` also has `HRMINTRST`, String length 1, domain `AAA_yes_no`, same definition as the existing `HRMINTRST` on `BLD_building_assetpoint`. Consistent with that field already existing on both, and supports treating the `HRMINTRST` mention on the FORM tab as an unrelated typo (see below) rather than an in-scope change.
+- No attribute rule on `BLD_BUILDING` touches `NAMESTATUS` or `NAMEAPRDTE` today (its only rule generates `BL_ID`). Consistent with the RFC's claim that the old sync script was removed rather than replaced with something else, there's nothing currently keeping these fields in sync between the two tables.
+- `BLD_BUILDING` duplicates a number of other assetpoint fields too (`OWNER`, `CONST_YEAR`, `TOTAL_SQFT`, `INSTYRCONF`, `SIZE1UNIT`, `SIZE1CONF`, `DISPOSAL`, `HRMINTRST`), which lines up with the RFC's framing of this as "part of the clean up of fields in the Building table." The separate "changes submitted for the Building table" RFC is likely about trimming these duplicates now that `BLD_building_assetpoint` carries its own copies, worth confirming once that RFC is located.
+
+Still to do:
+- Find the specific "changes submitted for the Building table" RFC/ticket number, still not located. Ask Lisa O'Toole, or check `R:\ICT\ICT GIS\GIS Design Authority\Change Requests\`. It's not TASK0320358 / TASK0320365, those cover `BLD_BUILDING_USE`, now ruled out as "the Building table" above.
 - Record the outcome here before starting the schema DDL in step 3 of the workflow order above.
+
+**Worth noting as supporting precedent for the `ROLLUPID` attribute-rule question** (`attribute_rules.md` §2, also flagged in Deferred / Follow-up Items below): `BLD_BUILDING_USE` has two working cross-table calculation rules that write back to `BLD_BUILDING` (`OCC_FSA` to `FSA_INSP`, `DWEL_UNITS` to `TL_RES_UNITS`). So a cross-table attribute rule between related building tables is a proven pattern here already, not unprecedented.
 
 **Also worth double-checking:** the FORM tab's "Field Name(s)" line reads `HRMINTRST, NAMESTATUS, NAMEAPRDTE`, but `HRMINTRST` already exists on `BLD_building_assetpoint` today (confirmed in the schema export) and its own row in the DATASET DETAILS tab says "No change to field at this time." The field that's actually new is `HERITAGE`, not `HRMINTRST`, this looks like a typo on the form. Worth a quick confirmation with Lisa before treating `HRMINTRST` as in scope for anything.
 
@@ -214,7 +222,11 @@ Confirmed against the RFC's IMPACTS tab, which also lists which application maps
 ---
 
 ## Open Questions
-- Which table "Building table" refers to in the Pre-Work item "Confirm changes to Building table" is not yet known (confirmed with Alex, 2026-08-19). Likely `BLD_BUILDING` or `BLD_BUILDING_USE`, but unconfirmed. See Pre-Work §2 for the steps to run this down.
+
+### Resolved
+- ~~Which table "Building table" refers to in the Pre-Work item "Confirm changes to Building table"~~ **Confirmed `BLD_BUILDING`**, 2026-08-19, verified against schema exports for both `BLD_BUILDING` and `BLD_BUILDING_USE`. See Pre-Work §2 for the field-level evidence. Still open: locating the specific RFC/ticket number for the "changes submitted for the Building table" that need to ship alongside this one.
+
+### Still open
 - AMO confirmation on `ASSETGRP` deletion is still outstanding; it gates the default-value item above.
 - `ROLLUPID` is also referenced as an attribute-rule candidate for the 8 building-component tables (`attribute_rules.md` §2), which depends on `BLD_building_assetpoint` having Land ID populated. Worth confirming that dependency is satisfied before those rules are built.
 - The FORM tab's field list for this ticket says `HRMINTRST, NAMESTATUS, NAMEAPRDTE`, but `HRMINTRST` already exists and its own row says "No change to field at this time." Likely a typo for `HERITAGE`, the field that's actually new. Confirm with Lisa O'Toole.
