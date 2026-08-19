@@ -51,7 +51,7 @@ So: field changes (steps 3 and 4) can go right after Pre-Work, just not before i
 **Still to do:** this export only covers production RW. Pull the same export for prod RO, QA RW/RO, Dev RW/RO, and the three `web_RO.gdb`s before deploying, to catch the kind of environment drift already seen on the `SOURCE` domain problem.
 
 ### 2. Confirm changes to Building table
-"Building table" most likely refers to `BLD_BUILDING` or `BLD_BUILDING_USE`, given the wider workstream already tracked in `workflow.md`. To confirm:
+Which table this refers to is not confirmed. It's probably `BLD_BUILDING` or `BLD_BUILDING_USE`, given the wider workstream already tracked in `workflow.md`, but that's a guess, not a fact yet. Steps to run it down:
 - Open the TASK0326632 RFC in `R:\ICT\ICT GIS\GIS Design Authority\Change Requests\` and check whether it names a related or dependent table.
 - Ask Lisa O'Toole whether the Building table changes referenced on the form are a separate ticket, or are meant to ship in the same window as TASK0326632.
 - Check whether this actually points at the TASK0320358 / TASK0320365 work already tracked in `workflow.md` (those cover `BLD_BUILDING_USE` field deletions), since that would mean the coordination is already tracked rather than new.
@@ -186,6 +186,7 @@ The original RFC's "Visible in AR" column for `BLD_building_assetpoint` isn't in
 ---
 
 ## Open Questions
+- Which table "Building table" refers to in the Pre-Work item "Confirm changes to Building table" is not yet known (confirmed with Alex, 2026-08-19). Likely `BLD_BUILDING` or `BLD_BUILDING_USE`, but unconfirmed. See Pre-Work §2 for the steps to run this down.
 - AMO confirmation on `ASSETGRP` deletion is still outstanding; it gates the default-value item above.
 - `ROLLUPID` is also referenced as an attribute-rule candidate for the 8 building-component tables (`attribute_rules.md` §2), which depends on `BLD_building_assetpoint` having Land ID populated. Worth confirming that dependency is satisfied before those rules are built.
 
