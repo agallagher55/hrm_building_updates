@@ -144,5 +144,5 @@ Change details from the 8 source spreadsheets are broken out into the following 
 - No environment-specific tracking yet (SDE Dev/QA/Prod, file GDB) for any of these 8. Will need same per-environment verification pattern used on prior tickets.
 ## Related Prior Work (for reference)
  
-See `bld_asset_point.md` for status on TASK0326632 (`BLD_building_assetpoint`, now the priority workstream), and `workflow.md` for TASK0320358 and TASK0320365, which cover `BLD_building_polygon`, `BLD_BUILDING_USE`, and `BLD_Building_Symbols`.
+See `work/bld_asset_point/bld_asset_point.md` for status on TASK0326632 (`BLD_building_assetpoint`, now the priority workstream), `workflow.md` for the cross-ticket dependency map and TASK0320358, and `tickets/TASK0320365.md` for TASK0320365, which covers `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`, and `BLD_BUILDING_CIVIC_LINK`.
  
