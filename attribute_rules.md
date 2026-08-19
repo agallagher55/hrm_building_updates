@@ -38,7 +38,8 @@ Fields where the change forms describe automatic/calculated behavior rather than
 
 - **Field:** CONDITEXP ("Condition Date Expiry")
 - **Description on every form:** "Dynamic field to calculate the date for condition inspection (CONDITDTE + CONDITEXP)"
-- **Confirmed:** treat as a genuine attribute rule candidate. Check each SDE environment to see whether it's already implemented; if not, build it as a calculation rule (`CONDITDTE + CONDITEXP` → resulting inspection date), same pattern as RMLIFE (same-record arithmetic, no cross-table lookup needed).
+- **Confirmed already implemented on `BLD_building_assetpoint` in production RW.** Verified via a schema export dated 2026-08-19 (see `bld_asset_point.md`, Pre-Work §1): the attribute rule `AssetReg - CONDITEXP - ConditionDateExpiry` (created 2025-07-01) already exists, `esriARTCalculation`, triggered on insert/update. Its actual formula is `CONDITDTE + CONDITPERD` (the update period, in days), not `CONDITDTE + CONDITEXP` as the change forms describe, since `CONDITEXP` is the field the rule writes to, not an input. Correct the formula description above when this pattern is built on the 8 component tables; use `CONDITPERD` as the second input if these tables also carry that field, otherwise confirm what field plays that role on each one before building.
+- Still needs checking on the other SDE environments (prod RO, QA, Dev, web_RO.gdb) and on each of the 8 component tables individually, since this confirms the pattern on one table in one environment only.
 
 ## 5. ASSETGRP — Asset Group (confirmed: default value, not an attribute rule)
 
