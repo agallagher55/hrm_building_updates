@@ -30,7 +30,7 @@ Fields where the change forms describe automatic/calculated behavior rather than
 - **Field:** RMLIFE ("Expected Life Year" on the 7 applicable components)
 - **Requested behavior:** `RMLIFE = INSTYR + BASELIFE`
 - **Rule type:** Calculation attribute rule, straightforward same-record arithmetic (no cross-table lookup needed, unlike ROLLUPID).
-- **Dependency:** relies on BASELIFE alias update being finalized first (see `fields_to_keep.md`).
+- **Dependency:** relies on BASELIFE alias update being finalized first (see `alias_updates.md`).
 
 ## 4. CONDITEXP — Condition Date Expiry
 

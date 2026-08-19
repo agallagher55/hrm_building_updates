@@ -122,6 +122,20 @@ This work appears related to the AMO confirmation dependency already tracked aga
  
 All 8 are currently **Open**, same due date (2026-07-31) and follow-up date (2026-06-30).
  
+## Documentation Suite
+
+Change details from the 8 source spreadsheets are broken out into the following supporting docs (all in this repo):
+
+| File | Contents |
+|---|---|
+| `fields_to_add.md` | New fields, common and component-specific |
+| `fields_to_delete.md` | AMO-suggested, FMO-confirmed deletions |
+| `fields_to_keep.md` | AMO suggested deletion, FMO overrode |
+| `alias_updates.md` | Fields never up for deletion, alias/label change only |
+| `domain_changes.md` | New domains, domains to delete, domains getting new codes/values |
+| `attribute_rules.md` | Fields needing calculated/automated behavior — implementation-facing breakdown |
+| `outstanding_questions.md` | Open decisions and flagged ambiguities, resolved and unresolved |
+
 ## Open Items / Action Items
  
 - Pull each `Changes to <COMPONENT>.xlsx` change form from the GIS Design Authority folder to get the actual field additions/removals per component. Descriptions on the tasks themselves are boilerplate and don't list specifics.
