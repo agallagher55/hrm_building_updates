@@ -80,10 +80,12 @@ The order-of-operations requirement itself (`BLD_building_assetpoint`'s adds mus
 This question traces back to an unresolved note on the RFC itself (DATASET DETAILS tab, `FCODE` row): "Is this field being used for anything? Check." It's not tied to a planned delete, so it isn't gating the schema DDL in steps 3 to 4 of the workflow order, it only matters for closing out the open question the RFC raised and as a heads-up if `FCODE` becomes a delete candidate later.
 
 ### 4. Notify Digital Services of upcoming field changes
-**Deployment timeline (per Alex, 2026-08-19):** Dev this week, QA early next week (week of August 25). Notice to Somya should go out ahead of the Dev start given this.
+**Deployment timeline (per Alex, 2026-08-19):** Dev this week, QA early next week (week of August 25). Notice should go out ahead of the Dev start given this.
 
-- [x] Draft the notice. Done, 2026-08-19, draft covers the full field list, the ETL objects, and the `FCODE` question below. Not yet sent.
-- [ ] Send the notice to Somya, referencing TASK0326632. Somya is part of **Digital Services**, not Data Services, that's the ServiceNow assignment group on this ticket (`Data Services Support`), a different thing from her team.
+**Recipients (per Alex, 2026-08-19):** To: Blair Jeffers, Mukesh Maji, Andrea Assanuma, Somya Agarwal. Cc: Michael Potter, Lisa O'Toole. Broader distribution than just Somya, subject line: "Upcoming field changes to BLD_building_assetpoint (TASK0326632)". Scheduled for Thu, Aug 20 at 8:30 AM, not yet confirmed sent.
+
+- [x] Draft the notice. Done, 2026-08-19, draft covers the full field list, the ETL objects, and the `FCODE` question below. Recipients confirmed above, not yet sent.
+- [ ] Send the notice, referencing TASK0326632, to the Digital Services distribution listed above. Somya is part of **Digital Services**, not Data Services, that's the ServiceNow assignment group on this ticket (`Data Services Support`), a different thing from her team.
 - [ ] List the exact fields in the notice:
   - **Adds:** `HERITAGE`, `NAMESTATUS`, `NAMEAPRDTE`
   - **Deletes:** all 17 fields in the Delete Fields section below
