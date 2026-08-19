@@ -10,6 +10,8 @@
 
 **Source RFC:** `changes/Add fields to Building Assetpoint.xlsx` (also at `R:\ICT\ICT GIS\GIS Design Authority\Change Requests\Building Assetpoints\Add fields to Building Assetpoint.xlsx`)
 
+**Ticket record:** `tickets/TASK0326632.md` (ServiceNow fields and full description verbatim). This file (`bld_asset_point.md`) remains the working doc.
+
 **Related/dependent tickets** (different tables, tracked in `workflow.md`):
 - TASK0320358: view/service updates for `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`
 - TASK0320365: field/domain/table deletions for the same, plus `BLD_BUILDING_CIVIC_LINK`
@@ -53,10 +55,10 @@ So: field changes (steps 3 and 4) can go right after Pre-Work, just not before i
 ### 2. Confirm changes to Building table
 - [x] Confirm which table "Building table" refers to. Confirmed `BLD_BUILDING`, 2026-08-19, verified against schema exports for both `BLD_BUILDING` and `BLD_BUILDING_USE` (the latter has neither `NAMESTATUS` nor `NAMEAPRDTE`, ruled out).
 - [x] Confirm `NAMESTATUS` / `NAMEAPRDTE` type, length, and domain match exactly between `BLD_BUILDING` and the assetpoint additions. Confirmed, exact match on both, including all four `Bldg_Official_Name` coded values on `NAMESTATUS`.
-- [x] Locate the specific "changes submitted for the Building table" RFC. Found: `changes/Delete fields in Building table.xlsx` ("Delete fields in Building table," GIS Design Authority RFC, requestor Lisa O'Toole, dated 2026-04-09, High Priority, **not yet presented at GIS Design Authority** per a note on its DATASET DETAILS tab).
+- [x] Locate the specific "changes submitted for the Building table" RFC. Found: `changes/Delete fields in Building table.xlsx` ("Delete fields in Building table," GIS Design Authority RFC, requestor Lisa O'Toole, dated 2026-04-09, High Priority, **not yet presented at GIS Design Authority** per a note on its DATASET DETAILS tab). **Not the same as TASK0320365** (`tickets/TASK0320365.md`), that ticket covers `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`, and `BLD_BUILDING_CIVIC_LINK`, not `BLD_BUILDING` itself. This RFC is its own, separate, still-untracked item.
 - [x] Confirm the sequencing dependency between the two tickets. Confirmed and important: that RFC's own notes column says, verbatim, **"Add field to `BLD_building_assetpoint` and then delete"** for both `NAMESTATUS` and `NAMEAPRDTE`. So this ticket's adds are a hard prerequisite for that ticket's deletes on those two fields specifically, not just a "verify together" courtesy.
-- [ ] Find the ServiceNow TASK/RITM number for the "Delete fields in Building table" RFC. The xlsx itself doesn't carry one, it's a GIS Design Authority form, not a ServiceNow export like the others in this suite. Still open, not yet found.
-- [ ] Record final coordination outcome here before starting the schema DDL in step 3 of the workflow order above.
+- [ ] Find the ServiceNow TASK/RITM number for the "Delete fields in Building table" RFC. The xlsx itself doesn't carry one, it's a GIS Design Authority form, not a ServiceNow export like the others in this suite. Still open, not yet found. Ask Lisa O'Toole (requestor on both this RFC and TASK0326632), or search `R:\ICT\ICT GIS\GIS Design Authority\Change Requests\` directly. **Independent of the Digital Services notification in §4**, that's a separate thread with Somya about `FCODE` and ETL objects, not about this ticket number.
+- [ ] Record final coordination outcome here before starting the schema DDL in step 3 of the workflow order above. Depends on the item above, not on the Digital Services email.
 
 The order-of-operations requirement itself (`BLD_building_assetpoint`'s adds must land before `BLD_BUILDING` can delete `NAMESTATUS` / `NAMEAPRDTE`) isn't a separate checklist item here, it's tracked once, at the cross-ticket level, in `workflow.md`'s Cross-Ticket Dependency Map, alongside the sequencing for every other table in this workstream. Check there for current status rather than duplicating it as a checkbox in this file.
 

@@ -30,7 +30,7 @@ Every table in this workstream, which ticket drives it, its source RFC, and what
 
 ## TASK0326632 – BLD_building_assetpoint
 
-**Now tracked in its own file: `bld_asset_point.md`** (moved out since this became the priority workstream). This file keeps only the ticket summary row above and the related/dependent tickets below.
+**Now tracked in its own file: `bld_asset_point.md`** (moved out since this became the priority workstream). Ticket record (ServiceNow fields, full description) in `tickets/TASK0326632.md`. This file keeps only the ticket summary row above and the related/dependent tickets below.
 
 ---
 
