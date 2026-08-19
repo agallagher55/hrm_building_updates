@@ -22,6 +22,8 @@
 
 All of the work below is driven by a single ticket, TASK0326632, so there's no cross-ticket sequencing to worry about within this file. The order matters for two reasons: (1) Pre-Work is investigative and can change what the schema changes actually are, so it needs to happen first, not after; (2) Views, ETL, Open Data, and metadata all read the finished field list, so they need to happen after the schema is final, not interleaved with it (per the "view SQL can silently break when referenced fields are deleted" lesson from the related workstream in `workflow.md`).
 
+**Planned timeline (per Alex, 2026-08-19):** Dev this week, QA early next week (week of August 25). Prod not yet scheduled.
+
 1. **Pre-Work**: gating checks (confirm current schema, `FCODE` usage, AR visibility settings, coordinate with Building table changes, notify Digital Services). Do this before touching schema so the Add/Delete lists below don't need revisiting.
 2. **Finish the leftover Domain/Field Fix**: the 🔴 `Bldg_TBL_source` domain gap in the three `web_RO.gdb`s. Independent cleanup left over from June, not blocked by anything above and doesn't block anything below, can run in parallel with Pre-Work.
 3. **Schema Changes, Add Fields**, then **Delete Fields**: do these together as one deployment pass across Dev, QA, and Prod (plus `web_RO.gdb`), since they hit the same table in the same environments.
@@ -78,6 +80,9 @@ The order-of-operations requirement itself (`BLD_building_assetpoint`'s adds mus
 This question traces back to an unresolved note on the RFC itself (DATASET DETAILS tab, `FCODE` row): "Is this field being used for anything? Check." It's not tied to a planned delete, so it isn't gating the schema DDL in steps 3 to 4 of the workflow order, it only matters for closing out the open question the RFC raised and as a heads-up if `FCODE` becomes a delete candidate later.
 
 ### 4. Notify Digital Services of upcoming field changes
+**Deployment timeline (per Alex, 2026-08-19):** Dev this week, QA early next week (week of August 25). Notice to Somya should go out ahead of the Dev start given this.
+
+- [x] Draft the notice. Done, 2026-08-19, draft covers the full field list, the ETL objects, and the `FCODE` question below. Not yet sent.
 - [ ] Send the notice to Somya, referencing TASK0326632. Somya is part of **Digital Services**, not Data Services, that's the ServiceNow assignment group on this ticket (`Data Services Support`), a different thing from her team.
 - [ ] List the exact fields in the notice:
   - **Adds:** `HERITAGE`, `NAMESTATUS`, `NAMEAPRDTE`
