@@ -82,10 +82,10 @@ This question traces back to an unresolved note on the RFC itself (DATASET DETAI
 ### 4. Notify Digital Services of upcoming field changes
 **Deployment timeline (per Alex, 2026-08-19):** Dev this week, QA early next week (week of August 25). Notice should go out ahead of the Dev start given this.
 
-**Recipients (per Alex, 2026-08-19):** To: Blair Jeffers, Mukesh Maji, Andrea Assanuma, Somya Agarwal. Cc: Michael Potter, Lisa O'Toole. Broader distribution than just Somya, subject line: "Upcoming field changes to BLD_building_assetpoint (TASK0326632)". Scheduled for Thu, Aug 20 at 8:30 AM, not yet confirmed sent.
+**Recipients (per Alex, 2026-08-19):** To: Blair Jeffers, Mukesh Maji, Andrea Assanuma, Somya Agarwal. Cc: Michael Potter, Lisa O'Toole. Broader distribution than just Somya, subject line: "Upcoming field changes to BLD_building_assetpoint (TASK0326632)". Sent 2026-08-19 (ahead of the Thu, Aug 20 scheduled-send suggestion Outlook offered).
 
 - [x] Draft the notice. Done, 2026-08-19.
-- [ ] Send the notice, referencing TASK0326632, to the Digital Services distribution listed above. Somya is part of **Digital Services**, not Data Services, that's the ServiceNow assignment group on this ticket (`Data Services Support`), a different thing from her team. About to send, per Alex, 2026-08-19, not yet confirmed sent.
+- [x] Send the notice, referencing TASK0326632, to the Digital Services distribution listed above. Somya is part of **Digital Services**, not Data Services, that's the ServiceNow assignment group on this ticket (`Data Services Support`), a different thing from her team. Sent, 2026-08-19.
 - [x] List the exact fields in the notice. Adds and deletes included in full; alias-only changes and domain changes list trimmed down to just the domain changes, alias-only changes left out of the final version, a reasonable call since ETL reads by field name, not alias.
   - **Adds:** `HERITAGE`, `NAMESTATUS`, `NAMEAPRDTE`
   - **Deletes:** all 17 fields in the Delete Fields section below
@@ -94,7 +94,7 @@ This question traces back to an unresolved note on the RFC itself (DATASET DETAI
 - [x] Call out the ETL objects that will need matching updates, confirmed per the RFC's IMPACTS tab: `STG_01.ARCGIS.BLD_BUILDING_ASSETPOINT_STG`, `DM_01.BUILDING.DIM_BUILDING`, `DM_01.BUILDING.DIM_BUILDING_NEW`. Included.
 - [ ] ~~Ask how much lead time she needs before deployment~~ Left out of the final version. Not blocking, worth asking separately once QA wraps up and Prod timing needs to be set.
 - [x] Confirm whether her team maintains anything downstream of this table beyond the ETL objects already listed. Included.
-- [ ] Log the date the notice was sent, and any response, here once done.
+- [x] Log the date the notice was sent, and any response, here once done. **Sent 2026-08-19.** Response pending, awaiting confirmation on the `FCODE` question, the 17-field-delete impact check, and whether anything else downstream needs to be flagged.
 
 **Final text (about to send, 2026-08-19):**
 
