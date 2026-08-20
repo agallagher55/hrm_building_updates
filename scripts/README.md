@@ -33,3 +33,14 @@ Not scripted yet: the `web_RO.gdb` `Bldg_TBL_source` domain-creation gap
 there), and the `OWNER` alias update (new alias not yet confirmed). See the
 "Domain Updates" and "Metadata / Alias Updates" sections of
 `work/bld_asset_point/bld_asset_point.md`.
+
+## completed/
+
+Historical scripts, already executed against real environments (mostly Prod),
+uploaded 2026-08-20 for the record — not part of the run order above, and not
+guaranteed to run as-is (e.g. `3_assign_domain.py` depends on a legacy
+`HRMutils` module that isn't `gispy` and isn't in this repo). Each file has a
+header noting what it changed, when/where it ran, and what it confirms or
+flags in the tracking docs. `20260607_loggies.log` is the real run log for
+`3_assign_domain.py`. See `tickets/TASK0320355.md` for the flagged
+`4_new_field.py` feature-class mismatch.

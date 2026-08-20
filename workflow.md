@@ -5,9 +5,16 @@
 | Ticket | Feature Classes / Tables | Due Date | Status |
 |---|---|---|---|
 | TASK0326632 | `BLD_building_assetpoint` | Jul 10, 2026 | 🔵 In Progress |
+| TASK0312692 | `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols` (originating catch-all task) | Jan 30, 2026 ⚠️ | 🔵 In Progress |
+| TASK0320355 | `BLD_building_polygon`, `BLD_Building_Symbols` (add/update fields) | Jan 30, 2026 ⚠️ | 🔵 In Progress |
 | TASK0320358 | `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols` (view updates) | Jan 30, 2026 ⚠️ | ⚪ Not Started |
 | TASK0320365 | `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`, `BLD_BUILDING_CIVIC_LINK` (field/domain/table deletions) | Jan 30, 2026 ⚠️ | 🟡 Blocked on TASK0320358 |
 | *(no ticket number)* | `BLD_BUILDING` (field deletions) | *(not tracked)* | ⚪ Not Started |
+
+All five rows above (except the untracked `BLD_BUILDING` one) sit under the same Request Item, `RITM0298835`.
+`TASK0312692` (`tickets/TASK0312692.md`) is the originating catch-all task; `TASK0320355`
+(`tickets/TASK0320355.md`), `TASK0320358`, and `TASK0320365` (`tickets/TASK0320365.md`) split its scope into
+add/update-fields, view-updates, and deletion follow-up tasks respectively.
 
 ---
 
@@ -19,9 +26,9 @@ Every table in this workstream, which ticket drives it, its source RFC, and what
 |---|---|---|---|
 | `BLD_building_assetpoint` | TASK0326632 (see `work/bld_asset_point/bld_asset_point.md`) | `changes/Add fields to Building Assetpoint.xlsx` | Nothing, but gates the row below |
 | `BLD_BUILDING` (field deletions) | *no ticket number found yet* | `changes/Delete fields in Building table.xlsx` | **`BLD_building_assetpoint`'s `NAMESTATUS` / `NAMEAPRDTE` adds (TASK0326632) must land first.** That RFC's own notes column says, verbatim, "Add field to `BLD_building_assetpoint` and then delete" for both fields. Its other three deletes (`INSTYRCONF`, `SIZE1UNIT`, `SIZE1CONF`, `DISPOSAL`) carry no such dependency, they already exist on assetpoint independently. |
-| `BLD_building_polygon` | TASK0320358 (views) → TASK0320365 (deletes), see `tickets/TASK0320365.md` | `R:\...\Building Polygons\Changes to BLD_building_polygon feature class.xlsx` (not yet in this repo) | TASK0320365's polygon deletes are already done, ahead of the rest of that ticket |
-| `BLD_BUILDING_USE` | TASK0320358 (views) → TASK0320365 (deletes + domain values), see `tickets/TASK0320365.md` | `R:\...\Building Use\Delete fields in Building Use table.xlsx` (not yet in this repo) | TASK0320358 views must land first |
-| `BLD_Building_Symbols` | TASK0320358 (views) → TASK0320365 (domain values), see `tickets/TASK0320365.md` | `R:\...\Building Symbols\Building Symbol Fcode Changes.xlsx` (not yet in this repo) | TASK0320358 views must land first |
+| `BLD_building_polygon` | TASK0312692 (originating) → TASK0320355 (add/update fields, see `tickets/TASK0320355.md`) → TASK0320358 (views) → TASK0320365 (deletes), see `tickets/TASK0320365.md` | `changes/Changes to BLD_building_polygon feature class.xlsx` | TASK0320365's polygon deletes are already done, ahead of the rest of that ticket |
+| `BLD_BUILDING_USE` | TASK0312692 (originating) → TASK0320358 (views) → TASK0320365 (deletes + domain values), see `tickets/TASK0320365.md` | `R:\...\Building Use\Delete fields in Building Use table.xlsx` (not yet in this repo) | TASK0320358 views must land first |
+| `BLD_Building_Symbols` | TASK0312692 (originating) → TASK0320355 (add/update fields, see `tickets/TASK0320355.md`) → TASK0320358 (views) → TASK0320365 (domain values), see `tickets/TASK0320365.md` | `R:\...\Building Symbols\Building Symbol Fcode Changes.xlsx` (not yet in this repo) | TASK0320358 views must land first |
 | `BLD_BUILDING_CIVIC_LINK` | TASK0320365 (table deletion), see `tickets/TASK0320365.md` | `R:\...\Building Civic Link\Delete Building Civic Link table.xlsx` (not yet in this repo) | Full impact inventory (EMO views/services) before the table itself can be dropped |
 
 > **Sequencing, in short:** TASK0326632's assetpoint adds must land before `BLD_BUILDING` can delete `NAMESTATUS` / `NAMEAPRDTE`. TASK0320358 (view updates) must be completed before TASK0320365 (field/domain/table deletions) can proceed, the `BLD_building_polygon` field deletions in TASK0320365 are the only exception, those are already done.
@@ -37,12 +44,15 @@ Every table in this workstream, which ticket drives it, its source RFC, and what
 ## Other / Untracked Work
 
 ### BLD_building_polygon – ad hoc changes (Jun 2026)
+*Driving ticket: TASK0320355 (`tickets/TASK0320355.md`), under the same RITM0298835 as TASK0312692/TASK0320358/TASK0320365*
 - [ ] 🔴 Update alias for `ZVALUE` → "Roofline Height metres" — was commented out in `1_update_field_alias.py`; not yet done
-- [x] `HGTSOURCE` field — already existed in all SDE envs as of Jun 14 ✅; confirmed in Prod web_RO.gdb Jun 19 ✅
+- [x] `HGTSOURCE` field (Text/30, alias "Height Source", domain `Bldg_height_source`: `LIDAR`/`ECOPIA`/`PICTOMETRY`/`POSSE`) — already existed in all SDE envs as of Jun 14 ✅; confirmed in Prod web_RO.gdb Jun 19 ✅. Independently corroborated by the deployed `BLD_building_polygon_insp_VW` definition below (selects `HGTSOURCE` directly from this feature class) and by TASK0320355 / TASK0312692 / the "Building Height in GIS" email thread, all of which confirm this field belongs on `BLD_building_polygon` only — see `tickets/TASK0320355.md`.
 - [ ] 🔴 `HGTSOURCE` missing from QA web_RO.gdb — confirmed absent; needs targeted run of `2_new_field.py` against `qa_web_ro_gdb`
+- [ ] 🔴 **Possible erroneous duplicate on `BLD_building_symbol`:** `scripts/completed/4_new_field.py` (historical script, uploaded 2026-08-20, run against Prod RW/RO only, no log) added this exact `HGTSOURCE` / `Bldg_height_source` spec to `SDEADM.BLD_building_symbol` instead of `SDEADM.BLD_building_polygon`. No ticket, RFC, or email calls for `HGTSOURCE` on `BLD_Building_Symbols`. Needs a live-schema check on `BLD_building_symbol` in Prod to confirm whether this happened, and if so whether to remove it. See `tickets/TASK0320355.md`.
 - [x] Delete `FOOT_SQFT`, `FLOORS`, `SCALE` — ✅ confirmed complete all envs (Dev RW/RO, QA RW/RO, QA web_RO.gdb, Prod RW/RO, Prod web_RO.gdb) via Jun 15 log
 
 ### BLD_Building_Symbols – ad hoc changes (Jun 2026)
+*Driving ticket: TASK0320355 (`tickets/TASK0320355.md`), under the same RITM0298835 as TASK0312692/TASK0320358/TASK0320365*
 - [x] Alias updates (`ADDDATE`, `SOURCE`, `SACC`, `MODDATE`) — ✅ done QA + Prod (Jun 14 log)
 - [ ] ⚠️ Remove `AAA_operator_asset` from `ADDBY`/`MODBY` — in task.txt but no script or log; confirm if done
 - [x] Add `SYGROUP` field (Text/25, "Symbol Group", domain `Bldg_symbol_group`) — ✅ added all envs Jun 15; confirmed already exists in Prod web_RO.gdb Jun 19. No explicit "Succeeded" in log — confirm field is functional.
