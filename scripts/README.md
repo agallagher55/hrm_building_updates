@@ -27,12 +27,15 @@ Uncomment them once a change is verified in Dev/QA and ready to promote.
 | 2 | `2_delete_fields_bld_building_assetpoint.py` | Delete the 17 unpopulated fields |
 | 3 | `3_update_aliases_bld_building_assetpoint.py` | Update 5 confirmed field aliases |
 | 4 | `4_add_domain_codes_bld_building_assetpoint.py` | Add `FMO` / `FDC` codes to `Bldg_FC_source` (used by this table's `SOURCE` field) |
+| 5 | `5_create_domain_bld_building_assetpoint.py` | Create `Bldg_TBL_source` in `web_RO.gdb` (transferred from an SDE workspace, confirmed missing there as of 2026-08-20) |
+| 6 | `6_assign_domain_bld_building_assetpoint.py` | Re-run the `SOURCE` field's domain assignment against `web_RO.gdb`, now that the domain exists there |
 
-Not scripted yet: the `web_RO.gdb` `Bldg_TBL_source` domain-creation gap
-(needs the domain created in each GDB before `SOURCE` can be reassigned
-there), and the `OWNER` alias update (new alias not yet confirmed). See the
-"Domain Updates" and "Metadata / Alias Updates" sections of
-`work/bld_asset_point/bld_asset_point.md`.
+Scripts 5 and 6 default to `dev_web_ro_gdb` only (the `qa_web_ro_gdb` / `prod_web_ro_gdb`
+targets are commented out), same dev-first pattern as 1-4, since `dev_web_ro_gdb`'s status
+is untested (only `qa_web_ro_gdb` and `prod_web_ro_gdb` have been confirmed missing the domain).
+
+Not scripted yet: the `OWNER` alias update (new alias not yet confirmed). See "Metadata /
+Alias Updates" in `work/bld_asset_point/bld_asset_point.md`.
 
 ## completed/
 

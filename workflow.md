@@ -48,17 +48,25 @@ Every table in this workstream, which ticket drives it, its source RFC, and what
 - [ ] 🔴 Update alias for `ZVALUE` → "Roofline Height metres" — was commented out in `1_update_field_alias.py`; not yet done
 - [x] `HGTSOURCE` field (Text/30, alias "Height Source", domain `Bldg_height_source`: `LIDAR`/`ECOPIA`/`PICTOMETRY`/`POSSE`) — already existed in all SDE envs as of Jun 14 ✅; confirmed in Prod web_RO.gdb Jun 19 ✅. Independently corroborated by the deployed `BLD_building_polygon_insp_VW` definition below (selects `HGTSOURCE` directly from this feature class) and by TASK0320355 / TASK0312692 / the "Building Height in GIS" email thread, all of which confirm this field belongs on `BLD_building_polygon` only — see `tickets/TASK0320355.md`.
 - [ ] 🔴 `HGTSOURCE` missing from QA web_RO.gdb — confirmed absent; needs targeted run of `2_new_field.py` against `qa_web_ro_gdb`
-- [ ] 🔴 **Possible erroneous duplicate on `BLD_building_symbol`:** `scripts/completed/4_new_field.py` (historical script, uploaded 2026-08-20, run against Prod RW/RO only, no log) added this exact `HGTSOURCE` / `Bldg_height_source` spec to `SDEADM.BLD_building_symbol` instead of `SDEADM.BLD_building_polygon`. No ticket, RFC, or email calls for `HGTSOURCE` on `BLD_Building_Symbols`. Needs a live-schema check on `BLD_building_symbol` in Prod to confirm whether this happened, and if so whether to remove it. See `tickets/TASK0320355.md`.
+- [x] **Possible erroneous duplicate on `BLD_building_symbol` — ruled out in QA, Prod still unchecked.** `scripts/completed/4_new_field.py` (historical script, uploaded 2026-08-20, run against Prod RW/RO only, no log) added this exact `HGTSOURCE` / `Bldg_height_source` spec to `SDEADM.BLD_building_symbol` instead of `SDEADM.BLD_building_polygon`. Confirmed 2026-08-20 via a live ArcGIS Pro Fields view of `SDEADM.BLD_building_symbol` in QA: no `HGTSOURCE` field present, only the fields the `Building Symbol Fcode Changes.xlsx` RFC actually specifies (`changes/Building Symbol Fcode Changes.xlsx`: `OBJECTID`, `SHAPE`, `SYMB_ID`, `BL_ID`, `LABEL`, `FCODE`, `ADDBY`, `ADDDATE`, `SOURCE`, `SACC`, `MODBY`, `MODDATE`, `GLOBALID`, `SYGROUP` — no `HGTSOURCE` anywhere in that RFC either). That RFC is a fourth independent source confirming `HGTSOURCE` was never meant to touch `BLD_Building_Symbols`. **Still worth a quick check in Prod specifically**, since that's the only environment the script actually targeted (QA being clean doesn't rule out Prod). See `tickets/TASK0320355.md`.
 - [x] Delete `FOOT_SQFT`, `FLOORS`, `SCALE` — ✅ confirmed complete all envs (Dev RW/RO, QA RW/RO, QA web_RO.gdb, Prod RW/RO, Prod web_RO.gdb) via Jun 15 log
 
 ### BLD_Building_Symbols – ad hoc changes (Jun 2026)
 *Driving ticket: TASK0320355 (`tickets/TASK0320355.md`), under the same RITM0298835 as TASK0312692/TASK0320358/TASK0320365*
 - [x] Alias updates (`ADDDATE`, `SOURCE`, `SACC`, `MODDATE`) — ✅ done QA + Prod (Jun 14 log)
-- [ ] ⚠️ Remove `AAA_operator_asset` from `ADDBY`/`MODBY` — in task.txt but no script or log; confirm if done
+- [ ] ⚠️ Remove `AAA_operator_asset` from `ADDBY`/`MODBY` — in task.txt but no script or log; confirm if done. Source confirmed: `changes/Building Symbol Fcode Changes.xlsx` DATASET DETAILS tab, rows 13/17, note "Editor Tracking, remove domain?"
 - [x] Add `SYGROUP` field (Text/25, "Symbol Group", domain `Bldg_symbol_group`) — ✅ added all envs Jun 15; confirmed already exists in Prod web_RO.gdb Jun 19. No explicit "Succeeded" in log — confirm field is functional.
-- [ ] ⚠️ Create `Bldg_symbol_group` domain — `0_new_domain.py` prepared for QA + Prod; no log provided; confirm if run
-- [ ] ⚠️ Remove `BLISPSND`, `BLISPO` from `Bldg_symbol_fcode` domain — `domain_value_changes.py` has `TODO: Incomplete`; only targeted prod_rw; no log; confirm status
-- [ ] Implement attribute rule to populate `SYGROUP` from FCODE query — not yet done
+- [ ] ⚠️ Create `Bldg_symbol_group` domain — `0_new_domain.py` prepared for QA + Prod; no log provided; confirm if run. Full code list per `changes/Building Symbol Fcode Changes.xlsx` (rows 70-79): `ARTCULT` (Arts & Culture), `COMMREC` (Community & Recreation), `EMEGSERV` (Emergency Services), `EMO` (EMO Special Populations), `GOVLAW` (Government & Law), `SCHOOL` (Schools), `TERMINAL` (Terminals), `PUBWORKS` (Public Works Facilities) — each with an associated `FCODE in (...)` query, see below.
+- [ ] ⚠️ Remove `BLISPSND`, `BLISPO` from `Bldg_symbol_fcode` domain — `domain_value_changes.py` has `TODO: Incomplete`; only targeted prod_rw; no log; confirm status. Reasons per RFC: `BLISPSND` "Delete. Should never have been created as a symbol"; `BLISPO` "Delete. No need for this symbol anymore."
+- [ ] Implement attribute rule to populate `SYGROUP` from FCODE query — not yet done. The RFC's own queries to use per group (`changes/Building Symbol Fcode Changes.xlsx`, rows 72-79):
+  - `ARTCULT`: `FCODE in ('BLRCOB','BLRCAG','BLRCTR','BLRCEC','BLRCMU','BLISLB','BLISAR','BLISPW')`
+  - `COMMREC`: `FCODE in ('BLRCCC','BLRCRF')`
+  - `EMEGSERV`: `FCODE in ('BLISPB','BLISHO','BLISCL','BLISFS','BLISPSCO','BLISPSHQ','BLISPSSO','BLISRS')`
+  - `EMO`: `FCODE in ('BLISNH','BLRSGH','BLRSRC','BLRSSA','BLCMASC','BLISDC','BLRSRR','BLRSSC','BLRSCB','BLRSDS','BLRSSO')`
+  - `GOVLAW`: `FCODE in ('BLISCT','BLISLG')`
+  - `SCHOOL`: `FCODE in ('BLISSHP','BLISSH')`
+  - `TERMINAL`: `FCODE in ('BLTRAT','BLTRBT','BLTRFT','BLTRRT')`
+  - `PUBWORKS`: `FCODE in ('BLIDCF','BLIDRE','BLIDRS','BLTRPW')`
 
 ---
 
