@@ -10,7 +10,7 @@ dev_web_ro_gdb is untested but presumed to have the same gap.
 Transfers the domain (with its current coded values, e.g. CRE) from an SDE workspace
 where it already exists into the target web_RO.gdb, rather than recreating it from
 scratch, so the coded values stay in sync. Run this before
-6_assign_domain_bld_building_assetpoint.py.
+0b_assign_domain_bld_building_assetpoint.py.
 """
 
 import logging

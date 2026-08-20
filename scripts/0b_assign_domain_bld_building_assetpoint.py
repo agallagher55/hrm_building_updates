@@ -1,6 +1,6 @@
 """
 TASK0326632 — Re-run the Bldg_TBL_source -> SOURCE field assignment against web_RO.gdb,
-now that 5_create_domain_bld_building_assetpoint.py has created the domain there.
+now that 0a_create_domain_bld_building_assetpoint.py has created the domain there.
 Source: work/bld_asset_point/bld_asset_point.md, "Domain / Field Fixes",
 "Fix SOURCE domain assignment in all three web_RO.gdb".
 
