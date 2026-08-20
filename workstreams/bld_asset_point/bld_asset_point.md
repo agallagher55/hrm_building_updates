@@ -95,8 +95,8 @@ This question traces back to an unresolved note on the RFC itself (DATASET DETAI
 - [ ] ~~Ask how much lead time she needs before deployment~~ Left out of the final version. Not blocking, worth asking separately once QA wraps up and Prod timing needs to be set.
 - [x] Confirm whether her team maintains anything downstream of this table beyond the ETL objects already listed. Included.
 - [x] Log the date the notice was sent, and any response, here once done. **Sent 2026-08-19. Response received 2026-08-20** (Somya Agarwal, Senior Developer, Data Services). See below.
-- [ ] Create a ServiceNow subtask under TASK0326632 for Digital Services to test the field changes in ETL once deployed to QA. **Requested by Somya, 2026-08-20** ("It would be great if you could create a subtask for us to test the changes in ETL when you update these in QA environment."), not yet created.
-- [ ] Reply to Somya answering her two open questions below (`SOURCE` domain datatype/length, and which table exposes `Bldg_FC_source` to her team).
+- [x] Create a ServiceNow subtask under TASK0326632 for Digital Services to test the field changes in ETL once deployed to QA. **Requested by Somya, 2026-08-20** ("It would be great if you could create a subtask for us to test the changes in ETL when you update these in QA environment."). **Created and sent to Somya, 2026-08-20: TASK0330764.**
+- [ ] Reply to Somya answering her two remaining open questions below (`SOURCE` domain datatype/length, and which table exposes `Bldg_FC_source` to her team). Not yet answered, Alex's 2026-08-20 reply only covered the subtask.
 
 **Response received 2026-08-20 (Somya Agarwal, inline replies to the 2026-08-19 notice):**
 
@@ -105,6 +105,8 @@ This question traces back to an unresolved note on the RFC itself (DATASET DETAI
 - **`SOURCE` domain reassignment (`Bldg_FC_source` → `Bldg_TBL_source`):** Somya asked whether this implies a datatype/length change on the field, or is purely a GIS-side domain repoint with no schema impact on her side. **Still open, needs a reply from Alex** — see Open Questions below.
 - **`Bldg_FC_source` new codes (`FMO`, `FDC`):** Somya's team doesn't have access to `Bldg_FC_source` and asked which table available to them carries it as a source. **Still open, needs a reply from Alex** — see Open Questions below.
 - **Additional downstream systems:** Somya's team uses several `BLD_building_assetpoint` fields (beyond the three ETL objects already flagged) to build datamarts — specifically as one of the sources for **Facilities Workorders datamarts**, **IVOS integrations**, and "a few fact tables." The attached `BLD_building_assetpoint_Fields_ETL_Utilization.xlsx` lists which of the table's 60 fields ("Used in ETL" = Yes) feed those downstream consumers; no exact object names were given for the datamarts/fact tables themselves. This is new scope beyond the `STG_01.ARCGIS.BLD_BUILDING_ASSETPOINT_STG` / `DM_01.BUILDING.DIM_BUILDING` / `DM_01.BUILDING.DIM_BUILDING_NEW` objects already tracked in Post-Schema – Data Warehouse / ETL below — worth folding into that section once the exact object names are known, though none of the 17 fields being deleted are among the fields she flagged as ETL-consumed, so this doesn't block the current deploy.
+
+**Alex's reply, 2026-08-20:** "Great, thanks Somya. Appreciated! Here is the subtask: TASK0330764." Confirms the QA-testing subtask above was created and sent the same day. This reply did not yet cover the two still-open technical questions (`SOURCE` domain datatype/length, and which table exposes `Bldg_FC_source`), those still need a follow-up.
 
 **Final text (about to send, 2026-08-19):**
 
@@ -224,7 +226,7 @@ Confirmed against the RFC's IMPACTS tab, which also lists which application maps
 - [ ] Update `DM_01.BUILDING.DIM_BUILDING`
 - [ ] Update `DM_01.BUILDING.DIM_BUILDING_NEW`
 - [ ] Coordinate with FDM Property ETL process owner
-- [ ] Create ServiceNow subtask under TASK0326632 for Digital Services (Somya Agarwal) to test the deployed changes in ETL once QA is updated — requested 2026-08-20, see Pre-Work §4.
+- [x] Create ServiceNow subtask under TASK0326632 for Digital Services (Somya Agarwal) to test the deployed changes in ETL once QA is updated — requested 2026-08-20, see Pre-Work §4. **Created 2026-08-20: TASK0330764.**
 - [ ] Get exact object names for the additional downstream consumers Somya flagged 2026-08-20 (Facilities Workorders datamarts, IVOS integrations, "a few fact tables") and add them to this list. Reference `../../changes/BLD_building_assetpoint_Fields_ETL_Utilization.xlsx` for which fields feed them. None of the 17 deleted fields are used by these per that list, so not a blocker, just needs tracking.
 
 ## Open Data
@@ -259,6 +261,7 @@ Confirmed against the RFC's IMPACTS tab, which also lists which application maps
 - ~~That same RFC references a third one, "changes submitted for the Building Polygons"~~ **Very likely already known**, 2026-08-19: matches `Changes to BLD_building_polygon feature class.xlsx`, already tracked under TASK0320365 (`../../tickets/TASK0320365.md`), both live in the same `Building Polygons` network folder. Worth a quick confirmation, but not a new unlocated document.
 - ~~Get confirmation on `FCODE` usage from Digital Services~~ **Confirmed 2026-08-20** (Somya Agarwal): not utilized in any downstream processes. See Pre-Work §3 and §4.
 - ~~Can Digital Services confirm none of the 17 fields being deleted are referenced in their ETL objects~~ **Confirmed 2026-08-20** (Somya Agarwal): "These fields are not being used in our processes and can be safely removed," independently cross-checked against her attached `BLD_building_assetpoint_Fields_ETL_Utilization.xlsx`. She's asked for a QA test pass once deployed there, see Pre-Work §4 action item.
+- ~~Create a ServiceNow subtask under TASK0326632 for Digital Services to test the changes in ETL once QA is updated~~ **Created 2026-08-20: TASK0330764**, sent to Somya same day. See Pre-Work §4.
 
 ### Still open
 - AMO confirmation on `ASSETGRP` deletion is still outstanding; it gates the default-value item above.
@@ -268,7 +271,6 @@ Confirmed against the RFC's IMPACTS tab, which also lists which application maps
 - **New, from Somya's 2026-08-20 reply:** does the `SOURCE` domain reassignment (`Bldg_FC_source` → `Bldg_TBL_source`) change the field's datatype or length, or is it purely a GIS-side domain repoint with no schema impact for Digital Services? She needs an answer before she can assess impact. Answerable directly from the production RW schema export already pulled in Pre-Work §1 (both domains are coded-value domains on a text field; confirm field type/length is unchanged by the reassignment itself) — just needs to be written back to her.
 - **New, from Somya's 2026-08-20 reply:** Digital Services doesn't have access to `Bldg_FC_source` directly and asked which table available to them carries it as a source, relevant to the two new `FMO` / `FDC` codes being added. Needs an answer identifying the accessible object (likely `STG_01.ARCGIS.BLD_BUILDING_ASSETPOINT_STG` or one of the `DIM_BUILDING` tables already flagged, but not yet confirmed which field/table exposes this domain to her).
 - **New, from Somya's 2026-08-20 reply:** exact object names for the additional downstream consumers she flagged — Facilities Workorders datamarts, IVOS integrations, and "a few fact tables" — aren't yet known beyond the field-level reference list she attached. See Post-Schema – Data Warehouse / ETL.
-- **New, from Somya's 2026-08-20 reply:** a ServiceNow subtask under TASK0326632 for Digital Services to test the changes in ETL once QA is updated hasn't been created yet.
 
 ## Status Legend
 
