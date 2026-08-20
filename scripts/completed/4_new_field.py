@@ -3,12 +3,13 @@ HISTORICAL — already executed, kept for the record, not part of the numbered r
 Adds HGTSOURCE (Text/30, alias "Height Source", domain Bldg_height_source) to SDEADM.BLD_building_symbol.
 Run against Prod (RW, RO) only, no log provided.
 
-FLAGGED — likely wrong target feature class. Every source ticket/RFC/email for this field
-(TASK0320355, TASK0312692, the "Building Height in GIS" email thread) specifies HGTSOURCE on
-BLD_building_polygon, not BLD_Building_Symbols; the deployed BLD_building_polygon_insp_VW also
-selects HGTSOURCE directly from BLD_building_polygon. See tickets/TASK0320355.md and
-workflow.md's "BLD_building_polygon – ad hoc changes" section. Needs a live-schema check on
-BLD_building_symbol in Prod to confirm whether this field landed there in error.
+FLAGGED, then RESOLVED (2026-08-20) — wrong target feature class, but no harm done. Every source
+ticket/RFC/email for this field (TASK0320355, TASK0312692, the "Building Height in GIS" email
+thread) specifies HGTSOURCE on BLD_building_polygon, not BLD_Building_Symbols; the deployed
+BLD_building_polygon_insp_VW also selects HGTSOURCE directly from BLD_building_polygon. Live
+ArcGIS Pro Fields views of SDEADM.BLD_building_symbol in QA and Prod both confirm no HGTSOURCE
+field exists there — whatever this script did, it left no stray field behind. See
+tickets/TASK0320355.md.
 """
 
 from configparser import ConfigParser

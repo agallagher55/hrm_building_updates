@@ -45,5 +45,6 @@ guaranteed to run as-is (e.g. `3_assign_domain.py` depends on a legacy
 `HRMutils` module that isn't `gispy` and isn't in this repo). Each file has a
 header noting what it changed, when/where it ran, and what it confirms or
 flags in the tracking docs. `20260607_loggies.log` is the real run log for
-`3_assign_domain.py`. See `tickets/TASK0320355.md` for the flagged
-`4_new_field.py` feature-class mismatch.
+`3_assign_domain.py`. See `tickets/TASK0320355.md` for the `4_new_field.py`
+feature-class mismatch (flagged, then confirmed harmless — no stray field in
+QA or Prod).
