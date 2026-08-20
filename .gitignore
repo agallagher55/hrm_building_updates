@@ -1,0 +1,3 @@
+scripts/config.ini
+*.log
+!scripts/completed/*.log

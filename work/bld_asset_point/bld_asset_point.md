@@ -146,8 +146,11 @@ Asset Registry visibility is controlled at the service layer, not in the geodata
 - [x] Remove `AAA_operator_asset` domain from `ADDBY` (prod RW, RO, web_RO.gdb) ✅
 - [x] Remove `AAA_operator_asset` domain from `MODBY` (prod RW, RO, web_RO.gdb) ✅
 - [x] Reassign `SOURCE` domain from `Bldg_FC_source` → `Bldg_TBL_source` (prod RW, RO; QA RW, RO; Dev RO) ✅
-- [x] Add `CRE` / Corporate Real Estate to `Bldg_TBL_source` domain (prod RW, RO, web_RO.gdb) ✅
-- [ ] 🔴 Fix `SOURCE` domain assignment in **all three `web_RO.gdb`** (Dev, QA, Prod): `Bldg_TBL_source` does not exist in file geodatabases; domain needs to be added to GDBs first
+- [ ] 🔴 **Needs re-check:** Add `CRE` / Corporate Real Estate to `Bldg_TBL_source` domain (prod RW, RO, web_RO.gdb) — was marked ✅ complete including `web_RO.gdb`, but a live re-run of the domain assignment on 2026-08-20 (below) shows `Bldg_TBL_source` still does **not** exist in `prod_web_ro_gdb`. `domains.add_code_value` can't succeed against a domain that isn't there, so either the CRE add only actually landed on `prod_rw`/`prod_ro` (which share the domain via SDE) and the "web_RO.gdb" part of this checkmark is inaccurate, or the domain was removed again since. Worth confirming which.
+- [ ] 🔴 Fix `SOURCE` domain assignment in **all three `web_RO.gdb`** (Dev, QA, Prod): `Bldg_TBL_source` does not exist in file geodatabases; domain needs to be added to GDBs first. Confirmed twice now:
+  - `20260607_loggies.log` (`scripts/completed/3_assign_domain.py`, 2026-06-07): `AssignDomainToField` failed with `ERROR 000112: Domain does not exist` on `qa_web_ro_gdb` and `prod_web_ro_gdb` (Dev RW/RO, QA RW/RO, Prod RW/RO all succeeded then). Dev's `web_RO.gdb` wasn't targeted in that run.
+  - Live re-run against just `qa_web_ro_gdb` and `prod_web_ro_gdb`, 2026-08-20: same `ERROR 000112: Domain does not exist` on both, over two months later — confirms this is still unresolved, not a transient/ordering issue. `dev_web_ro_gdb` still untested.
+  - **Next step:** create `Bldg_TBL_source` in the three `web_RO.gdb`s (with its current coded values, via `gispy.domains.transfer_domains` from an SDE workspace where it already exists) before re-running the `SOURCE` field assignment there. Scripted in `scripts/0a_create_domain_bld_building_assetpoint.py` and `scripts/0b_assign_domain_bld_building_assetpoint.py`, dev-only for now.
 - [x] Confirm editor tracking is enabled for `BLD_building_assetpoint` ✅ Confirmed via production RW schema export, 2026-08-19 (`editorTrackingEnabled: true`)
 
 ## Schema Changes – Add Fields

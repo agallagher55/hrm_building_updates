@@ -1,0 +1,77 @@
+06-07-2026 16:08:45 - INFO: ====================================================================================================
+06-07-2026 16:08:45 - INFO: Processing dbs: E:\HRM\Scripts\SDE\SQL\Dev\dev_RW_sdeadm.sde...
+06-07-2026 16:08:45 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:08:45 - INFO: Processing workspace: 'E:\HRM\Scripts\SDE\SQL\Dev\dev_RW_sdeadm.sde'...
+06-07-2026 16:08:46 - INFO: SDEADM.BLD_building_assetpoint
+06-07-2026 16:08:46 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:08:46 - INFO: SOURCE:  Bldg_TBL_source 
+06-07-2026 16:08:48 - ERROR: ERROR 000112: Domain does not exist.
+Failed to execute (AssignDomainToField).
+
+06-07-2026 16:10:24 - INFO: ====================================================================================================
+06-07-2026 16:10:24 - INFO: Processing dbs: E:\HRM\Scripts\SDE\SQL\Dev\dev_RO_sdeadm.sde...
+06-07-2026 16:10:24 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:10:24 - INFO: Processing workspace: 'E:\HRM\Scripts\SDE\SQL\Dev\dev_RO_sdeadm.sde'...
+06-07-2026 16:10:27 - INFO: SDEADM.BLD_building_assetpoint
+06-07-2026 16:10:27 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:10:27 - INFO: SOURCE: Bldg_TBL_source 
+06-07-2026 16:10:28 - ERROR: ERROR 000112: Domain does not exist.
+Failed to execute (AssignDomainToField).
+
+06-07-2026 16:10:46 - INFO: ====================================================================================================
+06-07-2026 16:10:46 - INFO: Processing dbs: E:\HRM\Scripts\SDE\SQL\Dev\dev_RO_sdeadm.sde...
+06-07-2026 16:10:46 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:10:46 - INFO: Processing workspace: 'E:\HRM\Scripts\SDE\SQL\Dev\dev_RO_sdeadm.sde'...
+06-07-2026 16:10:50 - INFO: SDEADM.BLD_building_assetpoint
+06-07-2026 16:10:50 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:10:50 - INFO: SOURCE: Bldg_TBL_source
+06-07-2026 16:10:52 - INFO: Start Time: Sunday, June 7, 2026 4:10:51 PM
+Succeeded at Sunday, June 7, 2026 4:10:52 PM (Elapsed Time: 1.20 seconds)
+06-07-2026 16:11:11 - INFO: ====================================================================================================
+06-07-2026 16:11:11 - INFO: Processing dbs: E:\HRM\Scripts\SDE\SQL\qa_RW_sdeadm.sde, E:\HRM\Scripts\SDE\SQL\qa_RO_sdeadm.sde, \\hrm.halifax.ca\fs\GISApp\QA\Data\FileGDBs\web_RO.gdb...
+06-07-2026 16:11:11 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:11:11 - INFO: Processing workspace: 'E:\HRM\Scripts\SDE\SQL\qa_RW_sdeadm.sde'...
+06-07-2026 16:11:13 - INFO: SDEADM.BLD_building_assetpoint
+06-07-2026 16:11:13 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:11:13 - INFO: SOURCE: Bldg_TBL_source
+06-07-2026 16:11:15 - INFO: Start Time: Sunday, June 7, 2026 4:11:14 PM
+Succeeded at Sunday, June 7, 2026 4:11:15 PM (Elapsed Time: 0.75 seconds)
+06-07-2026 16:11:15 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:11:15 - INFO: Processing workspace: 'E:\HRM\Scripts\SDE\SQL\qa_RO_sdeadm.sde'...
+06-07-2026 16:11:18 - INFO: SDEADM.BLD_building_assetpoint
+06-07-2026 16:11:18 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:11:18 - INFO: SOURCE: Bldg_TBL_source
+06-07-2026 16:11:20 - INFO: Start Time: Sunday, June 7, 2026 4:11:19 PM
+Succeeded at Sunday, June 7, 2026 4:11:20 PM (Elapsed Time: 1.11 seconds)
+06-07-2026 16:11:20 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:11:20 - INFO: Processing workspace: '\\hrm.halifax.ca\fs\GISApp\QA\Data\FileGDBs\web_RO.gdb'...
+06-07-2026 16:11:22 - INFO: SDEADM.BLD_building_assetpoint
+06-07-2026 16:11:22 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:11:22 - INFO: SOURCE: Bldg_TBL_source
+06-07-2026 16:11:23 - ERROR: ERROR 000112: Domain does not exist.
+Failed to execute (AssignDomainToField).
+
+06-07-2026 16:12:19 - INFO: ====================================================================================================
+06-07-2026 16:12:19 - INFO: Processing dbs: E:\HRM\Scripts\SDE\SQL\Prod\prod_RW_sdeadm.sde, E:\HRM\Scripts\SDE\SQL\Prod\prod_RO_sdeadm.sde, \\hrm.halifax.ca\fs\GISApp\PROD\Data\FileGDBs\web_RO.gdb...
+06-07-2026 16:12:19 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:12:19 - INFO: Processing workspace: 'E:\HRM\Scripts\SDE\SQL\Prod\prod_RW_sdeadm.sde'...
+06-07-2026 16:12:21 - INFO: SDEADM.BLD_building_assetpoint
+06-07-2026 16:12:21 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:12:21 - INFO: SOURCE: Bldg_TBL_source
+06-07-2026 16:12:23 - INFO: Start Time: Sunday, June 7, 2026 4:12:22 PM
+Succeeded at Sunday, June 7, 2026 4:12:23 PM (Elapsed Time: 0.83 seconds)
+06-07-2026 16:12:23 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:12:23 - INFO: Processing workspace: 'E:\HRM\Scripts\SDE\SQL\Prod\prod_RO_sdeadm.sde'...
+06-07-2026 16:12:26 - INFO: SDEADM.BLD_building_assetpoint
+06-07-2026 16:12:26 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:12:26 - INFO: SOURCE: Bldg_TBL_source
+06-07-2026 16:12:27 - INFO: Start Time: Sunday, June 7, 2026 4:12:26 PM
+Succeeded at Sunday, June 7, 2026 4:12:27 PM (Elapsed Time: 0.94 seconds)
+06-07-2026 16:12:27 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:12:27 - INFO: Processing workspace: '\\hrm.halifax.ca\fs\GISApp\PROD\Data\FileGDBs\web_RO.gdb'...
+06-07-2026 16:12:30 - INFO: SDEADM.BLD_building_assetpoint
+06-07-2026 16:12:30 - INFO: ----------------------------------------------------------------------------------------------------
+06-07-2026 16:12:30 - INFO: SOURCE: Bldg_TBL_source
+06-07-2026 16:12:31 - ERROR: ERROR 000112: Domain does not exist.
+Failed to execute (AssignDomainToField).
+
