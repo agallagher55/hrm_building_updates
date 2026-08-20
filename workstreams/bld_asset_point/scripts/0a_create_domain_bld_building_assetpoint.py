@@ -1,6 +1,6 @@
 """
 TASK0326632 — Create the Bldg_TBL_source domain in web_RO.gdb (doesn't exist there yet).
-Source: work/bld_asset_point/bld_asset_point.md, "Domain / Field Fixes",
+Source: ../bld_asset_point.md, "Domain / Field Fixes",
 "Fix SOURCE domain assignment in all three web_RO.gdb".
 
 Confirmed missing in qa_web_ro_gdb and prod_web_ro_gdb via a live re-run on 2026-08-20

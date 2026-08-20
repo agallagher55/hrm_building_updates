@@ -9,7 +9,7 @@ thread) specifies HGTSOURCE on BLD_building_polygon, not BLD_Building_Symbols; t
 BLD_building_polygon_insp_VW also selects HGTSOURCE directly from BLD_building_polygon. Live
 ArcGIS Pro Fields views of SDEADM.BLD_building_symbol in QA and Prod both confirm no HGTSOURCE
 field exists there — whatever this script did, it left no stray field behind. See
-tickets/TASK0320355.md.
+../../../../tickets/TASK0320355.md.
 """
 
 from configparser import ConfigParser

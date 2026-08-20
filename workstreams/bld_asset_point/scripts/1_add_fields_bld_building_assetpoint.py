@@ -1,6 +1,6 @@
 """
 TASK0326632 — Add fields to BLD_building_assetpoint.
-Source: work/bld_asset_point/bld_asset_point.md, "Schema Changes - Add Fields"
+Source: ../bld_asset_point.md, "Schema Changes - Add Fields"
 """
 
 import logging
