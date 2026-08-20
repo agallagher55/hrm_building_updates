@@ -2,7 +2,7 @@
 HISTORICAL — already executed, kept for the record, not part of the numbered run order in scripts/.
 Removes the (AAA_operator_asset) domain from ADDBY/MODBY on BLD_building_assetpoint.
 Run against Prod (RW, RO, web_RO.gdb) only; dev/qa commented out (already done there separately).
-Confirms: work/bld_asset_point/bld_asset_point.md, "Domain / Field Fixes (Completed June 7, 2026)".
+Confirms: ../../bld_asset_point.md, "Domain / Field Fixes (Completed June 7, 2026)".
 """
 
 import arcpy

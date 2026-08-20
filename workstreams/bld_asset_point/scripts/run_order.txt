@@ -39,4 +39,4 @@ Notes:
   work, not because 1-4 depend on them - the two groups touch different domains and
   workspaces, so either order works.
 - Not scripted yet: the OWNER alias update (new alias not yet confirmed). See
-  'Metadata / Alias Updates' in work/bld_asset_point/bld_asset_point.md.
+  'Metadata / Alias Updates' in ../bld_asset_point.md.

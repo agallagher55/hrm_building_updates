@@ -3,7 +3,7 @@ HISTORICAL — already executed, kept for the record, not part of the numbered r
 Reassigns Bldg_TBL_source to the SOURCE field on BLD_building_assetpoint.
 Run 2026-06-07, see 20260607_loggies.log in this folder: succeeded on Dev RO, QA RW/RO, Prod RW/RO;
 failed with "Domain does not exist" on Dev RW (before the domain existed there) and on qa_web_ro_gdb /
-prod_web_ro_gdb (still open, see work/bld_asset_point/bld_asset_point.md Domain Updates).
+prod_web_ro_gdb (still open, see ../../bld_asset_point.md Domain Updates).
 Depends on a legacy `HRMutils` module (not gispy, not present in this repo) — not runnable as-is.
 """
 

@@ -1,6 +1,7 @@
 """
-TASK0326632 — Delete fields from BLD_building_assetpoint.
-Source: work/bld_asset_point/bld_asset_point.md, "Schema Changes - Delete Fields"
+TASK0326632 — Add FMO / FDC codes to the Bldg_FC_source domain
+(used by BLD_building_assetpoint's SOURCE field).
+Source: ../bld_asset_point.md, "Domain Updates"
 """
 
 import logging
@@ -11,12 +12,14 @@ from datetime import date
 
 import arcpy
 
+from gispy import domains
+
 arcpy.env.overwriteOutput = True
 arcpy.SetLogHistory(False)
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-log_file = os.path.join(SCRIPT_DIR, f"{date.today()}_delete_fields_bld_building_assetpoint.log")
+log_file = os.path.join(SCRIPT_DIR, f"{date.today()}_add_domain_codes_bld_building_assetpoint.log")
 
 logger = logging.getLogger('locators')
 logger.setLevel(logging.DEBUG)
@@ -40,27 +43,12 @@ logger.addHandler(console_handler)
 config = ConfigParser()
 config.read(os.path.join(SCRIPT_DIR, 'config.ini'))
 
-UPDATE_FEATURE = "SDEADM.BLD_building_assetpoint"
-
-delete_fields = [
-    'REPLCSTOTL',
-    'MAT',
-    'MATCONF',
-    'LANDID',
-    'ASSETRAW',
-    'ASSETDESC',
-    'CRIT',
-    'CRITCONF',
-    'RMLIFECONF',
-    'INSTCSCONF',
-    'REPLCSRA',
-    'REPLRACONF',
-    'REPLCSCONF',
-    'TCACAT',
-    'PERFRMRA',
-    'PERFRMCONF',
-    'PROFCNCAT',
-]
+ADD_CODE_VALUES = {
+    "Bldg_FC_source": {
+        "FMO": "Facilities Maintenance & Operations",
+        "FDC": "Facilities Design & Construction",
+    },
+}
 
 if __name__ == "__main__":
 
@@ -94,18 +82,17 @@ if __name__ == "__main__":
             for db in dbs:
                 logger.info(f"DATABASE: {db}")
 
-                update_feature = UPDATE_FEATURE.replace("SDEADM.", "") if db.lower().endswith(".gdb") else UPDATE_FEATURE
+                for domain_name, code_values in ADD_CODE_VALUES.items():
 
-                logger.info(f"Feature: {update_feature}")
+                    domain_found, unfound_domains, db_domains = domains.domains_in_db(db, [domain_name])
 
-                with arcpy.EnvManager(workspace=db):
+                    if not domain_found:
+                        raise ValueError(
+                            f"Did not find domain '{domain_name}' in {db}. Unfound domains: {', '.join(unfound_domains)}"
+                        )
 
-                    if not arcpy.Exists(update_feature):
-                        raise ValueError(f"\tFeature, '{update_feature}', does not exist.")
+                    for code, value in code_values.items():
+                        logger.info(f"Domain and Code: {code} & {value}")
+                        domains.add_code_value(db, domain_name, code, value)
 
-                    arcpy.DeleteField_management(
-                        in_table=update_feature,
-                        drop_field=delete_fields,
-                        method="DELETE_FIELDS"
-                    )
                     logger.info(arcpy.GetMessages())

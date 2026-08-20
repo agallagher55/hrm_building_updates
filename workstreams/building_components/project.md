@@ -49,12 +49,12 @@ Change details from the 8 source spreadsheets are broken out into the following 
 
 ## Open Items / Action Items
 
-- ~~Pull each `Changes to <COMPONENT>.xlsx` change form from the GIS Design Authority folder~~ Done — all 8 forms plus the assetpoint/polygon/Building-table forms are in `changes/`.
+- ~~Pull each `Changes to <COMPONENT>.xlsx` change form from the GIS Design Authority folder~~ Done — all 8 forms plus the assetpoint/polygon/Building-table forms are in `../../changes/`.
 - ~~Confirm whether these 8 tasks are dependent on or independent of the AMO confirmation already blocking items in TASK0326632~~ Resolved: confirmed independent, see `outstanding_questions.md`.
 - Determine build order across the 8 components (schema-only vs. also touching views/services, similar to the BLD_building_polygon work).
 - No environment-specific tracking yet (SDE Dev/QA/Prod, file GDB) for any of these 8. Will need same per-environment verification pattern used on prior tickets.
 
 ## Related Prior Work (for reference)
 
-See `work/bld_asset_point/bld_asset_point.md` for status on TASK0326632 (`BLD_building_assetpoint`, now the priority workstream), `workflow.md` for the cross-ticket dependency map and TASK0320358, and `tickets/TASK0320365.md` for TASK0320365, which covers `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`, and `BLD_BUILDING_CIVIC_LINK`.
+See `../bld_asset_point/bld_asset_point.md` for status on TASK0326632 (`BLD_building_assetpoint`, now the priority workstream), `../../workflow.md` for the cross-ticket dependency map and TASK0320358, and `../../tickets/TASK0320365.md` for TASK0320365, which covers `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`, and `BLD_BUILDING_CIVIC_LINK`.
 

@@ -1,7 +1,7 @@
 # scripts
 
 Deployment scripts for TASK0326632 (`BLD_building_assetpoint` schema changes).
-See `work/bld_asset_point/bld_asset_point.md` for the full change tracking.
+See `../bld_asset_point.md` for the full change tracking.
 
 ## Setup
 
@@ -23,7 +23,7 @@ Uncomment them once a change is verified in Dev/QA and ready to promote.
 
 Everything below is `BLD_building_assetpoint` work under **TASK0326632**, except the last
 `completed/` row (`4_new_field.py`), which is **TASK0320355** (targeted the wrong feature class,
-confirmed to have caused no harm — see `tickets/TASK0320355.md`).
+confirmed to have caused no harm — see `../../../tickets/TASK0320355.md`).
 
 `completed/` = already run historically, kept for the record — not part of the active run order,
 not guaranteed to run as-is (`3_assign_domain.py` depends on a legacy `HRMutils` module that isn't
@@ -47,4 +47,4 @@ not guaranteed to run as-is (`3_assign_domain.py` depends on a legacy `HRMutils`
 depends on them — the two groups touch different domains and workspaces, so either order works.
 
 Not scripted yet: the `OWNER` alias update (new alias not yet confirmed). See "Metadata /
-Alias Updates" in `work/bld_asset_point/bld_asset_point.md`.
+Alias Updates" in `../bld_asset_point.md`.

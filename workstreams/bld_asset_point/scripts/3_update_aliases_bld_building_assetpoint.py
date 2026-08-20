@@ -1,6 +1,6 @@
 """
 TASK0326632 — Update field aliases on BLD_building_assetpoint.
-Source: work/bld_asset_point/bld_asset_point.md, "Metadata / Alias Updates"
+Source: ../bld_asset_point.md, "Metadata / Alias Updates"
 
 OWNER is left out: its new alias isn't confirmed yet (see that section's note).
 """

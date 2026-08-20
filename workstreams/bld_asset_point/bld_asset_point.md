@@ -1,6 +1,6 @@
 # BLD_building_assetpoint: Schema Change Tracking
 
-> Pulled out of `workflow.md` into its own file since this is now the priority workstream. `workflow.md` retains TASK0320358 / TASK0320365 (which cover `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`, `BLD_BUILDING_CIVIC_LINK`) and the related ad hoc work, since those are different feature classes/tables.
+> Pulled out of `../../workflow.md` into its own file since this is now the priority workstream. `../../workflow.md` retains TASK0320358 / TASK0320365 (which cover `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`, `BLD_BUILDING_CIVIC_LINK`) and the related ad hoc work, since those are different feature classes/tables.
 
 ## Ticket
 
@@ -8,11 +8,11 @@
 |---|---|---|---|---|
 | TASK0326632 | RITM0310811 | `BLD_building_assetpoint` | Jul 10, 2026 ⚠️ | 🔵 In Progress |
 
-**Source RFC:** `changes/Add fields to Building Assetpoint.xlsx` (also at `R:\ICT\ICT GIS\GIS Design Authority\Change Requests\Building Assetpoints\Add fields to Building Assetpoint.xlsx`)
+**Source RFC:** `../../changes/Add fields to Building Assetpoint.xlsx` (also at `R:\ICT\ICT GIS\GIS Design Authority\Change Requests\Building Assetpoints\Add fields to Building Assetpoint.xlsx`)
 
-**Ticket record:** `tickets/TASK0326632.md` (ServiceNow fields and full description verbatim). This file (`bld_asset_point.md`) remains the working doc.
+**Ticket record:** `../../tickets/TASK0326632.md` (ServiceNow fields and full description verbatim). This file (`bld_asset_point.md`) remains the working doc.
 
-**Related/dependent tickets** (different tables, tracked in `workflow.md`):
+**Related/dependent tickets** (different tables, tracked in `../../workflow.md`):
 - TASK0320358: view/service updates for `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`
 - TASK0320365: field/domain/table deletions for the same, plus `BLD_BUILDING_CIVIC_LINK`
 
@@ -20,7 +20,7 @@
 
 ## Recommended Workflow Order
 
-All of the work below is driven by a single ticket, TASK0326632, so there's no cross-ticket sequencing to worry about within this file. The order matters for two reasons: (1) Pre-Work is investigative and can change what the schema changes actually are, so it needs to happen first, not after; (2) Views, ETL, Open Data, and metadata all read the finished field list, so they need to happen after the schema is final, not interleaved with it (per the "view SQL can silently break when referenced fields are deleted" lesson from the related workstream in `workflow.md`).
+All of the work below is driven by a single ticket, TASK0326632, so there's no cross-ticket sequencing to worry about within this file. The order matters for two reasons: (1) Pre-Work is investigative and can change what the schema changes actually are, so it needs to happen first, not after; (2) Views, ETL, Open Data, and metadata all read the finished field list, so they need to happen after the schema is final, not interleaved with it (per the "view SQL can silently break when referenced fields are deleted" lesson from the related workstream in `../../workflow.md`).
 
 **Planned timeline (per Alex, 2026-08-19):** Dev this week, QA early next week (week of August 25). Prod not yet scheduled.
 
@@ -43,34 +43,34 @@ So: field changes (steps 3 and 4) can go right after Pre-Work, just not before i
 
 ### 1. Verify current schema of `BLD_building_assetpoint` in SDE
 - [x] Pull a schema export from production RW and check it against the tracked Add/Delete/Alias lists. Done, 2026-08-19, against `BLD_building_assetpoint_SCHEMA.json` (`GISRW01`).
-- [x] Cross-check that export against the RFC (`changes/Add fields to Building Assetpoint.xlsx`, DATASET DETAILS tab). Done, all 17 deletes, all 3 adds, and all 6 alias targets match, with FMO comments confirming each of the 17 deletes explicitly.
-- [x] Check for copy-paste inconsistencies on the Delete Fields list, like the `PERFRMRA` one flagged for a different ticket in `outstanding_questions.md`. None found on this form, its `PERFRMRA` row reads cleanly: "AMO has suggested this field be deleted" / "Yes, this can be deleted."
+- [x] Cross-check that export against the RFC (`../../changes/Add fields to Building Assetpoint.xlsx`, DATASET DETAILS tab). Done, all 17 deletes, all 3 adds, and all 6 alias targets match, with FMO comments confirming each of the 17 deletes explicitly.
+- [x] Check for copy-paste inconsistencies on the Delete Fields list, like the `PERFRMRA` one flagged for a different ticket in `../building_components/outstanding_questions.md`. None found on this form, its `PERFRMRA` row reads cleanly: "AMO has suggested this field be deleted" / "Yes, this can be deleted."
 
 **Findings from the production RW export:**
 - 65 fields total on the feature class today.
 - Editor tracking is confirmed **enabled**: creator field `ADDBY` / `ADDDATE`, last-editor field `MODBY` / `MODDATE`. This also answers the "Confirm editor tracking is enabled" item under Domain/Field Fixes below, marked complete now.
 - `SOURCE` already carries the `Bldg_TBL_source` domain in this environment, consistent with the June 7 fix log.
 - `ASSETGRP` already has the `AAA_asset_group` domain assigned, but no default value is set yet. Matches the pending AMO item in Deferred/Follow-up Items.
-- `CONDITEXP` already exists as a field, **and already has an attribute rule attached**: `AssetReg - CONDITEXP - ConditionDateExpiry`, created July 1, 2025, calculating from `CONDITDTE` and `CONDITPERD`. This resolves the open question in `attribute_rules.md` (§4) about whether the rule already exists in any SDE environment, it does, at least in production RW. It also corrects that file's formula description: the rule reads `CONDITDTE` + `CONDITPERD` (the update period, in days), not `CONDITDTE` + `CONDITEXP` as originally written there, since `CONDITEXP` is the field the rule writes *to*, not an input.
+- `CONDITEXP` already exists as a field, **and already has an attribute rule attached**: `AssetReg - CONDITEXP - ConditionDateExpiry`, created July 1, 2025, calculating from `CONDITDTE` and `CONDITPERD`. This resolves the open question in `../building_components/attribute_rules.md` (§4) about whether the rule already exists in any SDE environment, it does, at least in production RW. It also corrects that file's formula description: the rule reads `CONDITDTE` + `CONDITPERD` (the update period, in days), not `CONDITDTE` + `CONDITEXP` as originally written there, since `CONDITEXP` is the field the rule writes *to*, not an input.
 - No subtypes, no relationship classes, and no indexes are defined on this feature class today.
 
 ### 2. Confirm changes to Building table
 - [x] Confirm which table "Building table" refers to. Confirmed `BLD_BUILDING`, 2026-08-19, verified against schema exports for both `BLD_BUILDING` and `BLD_BUILDING_USE` (the latter has neither `NAMESTATUS` nor `NAMEAPRDTE`, ruled out).
 - [x] Confirm `NAMESTATUS` / `NAMEAPRDTE` type, length, and domain match exactly between `BLD_BUILDING` and the assetpoint additions. Confirmed, exact match on both, including all four `Bldg_Official_Name` coded values on `NAMESTATUS`.
-- [x] Locate the specific "changes submitted for the Building table" RFC. Found: `changes/Delete fields in Building table.xlsx` ("Delete fields in Building table," GIS Design Authority RFC, requestor Lisa O'Toole, dated 2026-04-09, High Priority, **not yet presented at GIS Design Authority** per a note on its DATASET DETAILS tab). **Not the same as TASK0320365** (`tickets/TASK0320365.md`), that ticket covers `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`, and `BLD_BUILDING_CIVIC_LINK`, not `BLD_BUILDING` itself. This RFC is its own, separate, still-untracked item.
+- [x] Locate the specific "changes submitted for the Building table" RFC. Found: `../../changes/Delete fields in Building table.xlsx` ("Delete fields in Building table," GIS Design Authority RFC, requestor Lisa O'Toole, dated 2026-04-09, High Priority, **not yet presented at GIS Design Authority** per a note on its DATASET DETAILS tab). **Not the same as TASK0320365** (`../../tickets/TASK0320365.md`), that ticket covers `BLD_building_polygon`, `BLD_BUILDING_USE`, `BLD_Building_Symbols`, and `BLD_BUILDING_CIVIC_LINK`, not `BLD_BUILDING` itself. This RFC is its own, separate, still-untracked item.
 - [x] Confirm the sequencing dependency between the two tickets. Confirmed and important: that RFC's own notes column says, verbatim, **"Add field to `BLD_building_assetpoint` and then delete"** for both `NAMESTATUS` and `NAMEAPRDTE`. So this ticket's adds are a hard prerequisite for that ticket's deletes on those two fields specifically, not just a "verify together" courtesy.
 - [ ] Find the ServiceNow TASK/RITM number for the "Delete fields in Building table" RFC. The xlsx itself doesn't carry one, it's a GIS Design Authority form, not a ServiceNow export like the others in this suite. Still open, not yet found. Ask Lisa O'Toole (requestor on both this RFC and TASK0326632), or search `R:\ICT\ICT GIS\GIS Design Authority\Change Requests\` directly. **Independent of the Digital Services notification in §4**, that's a separate thread with Somya about `FCODE` and ETL objects, not about this ticket number.
 - [ ] Record final coordination outcome here before starting the schema DDL in step 3 of the workflow order above. Depends on the item above, not on the Digital Services email.
 
-The order-of-operations requirement itself (`BLD_building_assetpoint`'s adds must land before `BLD_BUILDING` can delete `NAMESTATUS` / `NAMEAPRDTE`) isn't a separate checklist item here, it's tracked once, at the cross-ticket level, in `workflow.md`'s Cross-Ticket Dependency Map, alongside the sequencing for every other table in this workstream. Check there for current status rather than duplicating it as a checkbox in this file.
+The order-of-operations requirement itself (`BLD_building_assetpoint`'s adds must land before `BLD_BUILDING` can delete `NAMESTATUS` / `NAMEAPRDTE`) isn't a separate checklist item here, it's tracked once, at the cross-ticket level, in `../../workflow.md`'s Cross-Ticket Dependency Map, alongside the sequencing for every other table in this workstream. Check there for current status rather than duplicating it as a checkbox in this file.
 
 **More detail on the "Delete fields in Building table" RFC:**
 - **Reason for Change:** "Changes were made to the Building model a couple of years ago to better align with information from POSSE, new fields were added in the Building table. Recently the FDM Property ETL process to update building data for Fire in FDM has been updated. Part of the process was to repoint data to the new fields. Therefore, now those old fields need to be deleted as they are redundant." Unrelated to this ticket's own reasoning, it's a separate cleanup driven by the FDM ETL repoint.
-- Its own Requirements line reads: "There are also changes submitted for the Building Polygons and Building tables that should be all verified and implemented together." **Very likely the same `Changes to BLD_building_polygon feature class.xlsx` RFC already tracked under TASK0320365** (`tickets/TASK0320365.md`), both live in the same `Building Polygons` folder on the network share. Worth a quick confirmation, but this isn't a new, unlocated document.
+- Its own Requirements line reads: "There are also changes submitted for the Building Polygons and Building tables that should be all verified and implemented together." **Very likely the same `Changes to BLD_building_polygon feature class.xlsx` RFC already tracked under TASK0320365** (`../../tickets/TASK0320365.md`), both live in the same `Building Polygons` folder on the network share. Worth a quick confirmation, but this isn't a new, unlocated document.
 - Fields flagged "Delete field, already in `BLD_building_assetpoint`" on that RFC: `INSTYRCONF`, `SIZE1UNIT`, `SIZE1CONF`, `DISPOSAL`. These four don't carry the "add first" dependency, they already exist on assetpoint today, so `BLD_BUILDING` can drop its copies independently of this ticket's timeline.
-- Its IMPACTS tab lists `BLD_BUILDING_VW` (already tracked in `workflow.md` under TASK0320358 for `BLD_BUILDING_USE` field deletions, same view, two different reasons to update it), `BLD_BLDG_PLUS_USE`, `buildingdetails.csv` (Somya's ETL/dashboard source, also already tracked in `workflow.md`), and `STG_01.ARCGIS.BLD_BUILDING`, `STG_01.ODS.OPENDATA_BUILDING_DETAIL` on the ETL side.
+- Its IMPACTS tab lists `BLD_BUILDING_VW` (already tracked in `../../workflow.md` under TASK0320358 for `BLD_BUILDING_USE` field deletions, same view, two different reasons to update it), `BLD_BLDG_PLUS_USE`, `buildingdetails.csv` (Somya's ETL/dashboard source, also already tracked in `../../workflow.md`), and `STG_01.ARCGIS.BLD_BUILDING`, `STG_01.ODS.OPENDATA_BUILDING_DETAIL` on the ETL side.
 
-**Worth noting as supporting precedent for the `ROLLUPID` attribute-rule question** (`attribute_rules.md` §2, also flagged in Deferred / Follow-up Items below): `BLD_BUILDING_USE` has two working cross-table calculation rules that write back to `BLD_BUILDING` (`OCC_FSA` to `FSA_INSP`, `DWEL_UNITS` to `TL_RES_UNITS`). So a cross-table attribute rule between related building tables is a proven pattern here already, not unprecedented.
+**Worth noting as supporting precedent for the `ROLLUPID` attribute-rule question** (`../building_components/attribute_rules.md` §2, also flagged in Deferred / Follow-up Items below): `BLD_BUILDING_USE` has two working cross-table calculation rules that write back to `BLD_BUILDING` (`OCC_FSA` to `FSA_INSP`, `DWEL_UNITS` to `TL_RES_UNITS`). So a cross-table attribute rule between related building tables is a proven pattern here already, not unprecedented.
 
 ### 3. Check whether `FCODE` is in use
 - [x] Check the schema export for domain, subtype, attribute-rule, or index references to `FCODE`. Done, none found, `FCODE` has no domain, isn't a subtype field (this feature class has no subtypes), and isn't referenced by the one existing attribute rule or by any index.
@@ -130,7 +130,7 @@ This question traces back to an unresolved note on the RFC itself (DATASET DETAI
 
 ### 5. Asset Registry visibility (reference only, not a database concern)
 Asset Registry visibility is controlled at the service layer, not in the geodatabase schema (confirmed earlier, there's no AR-visibility flag anywhere in the schema export). Out of scope for database work, no live-app confirmation needed here.
-- [x] Pull the "Visible in AR" column from the RFC (`changes/Add fields to Building Assetpoint.xlsx`, DATASET DETAILS tab), as due-diligence context for the deletes below. Done.
+- [x] Pull the "Visible in AR" column from the RFC (`../../changes/Add fields to Building Assetpoint.xlsx`, DATASET DETAILS tab), as due-diligence context for the deletes below. Done.
 - [x] Confirm none of the 17 fields on the Delete Fields list are currently AR-visible, so the database deletes don't remove anything the service currently shows. Confirmed, all `No` (or blank, for `ASSETRAW`, which has no value entered either way).
 
 **The three new fields, AR visibility per the RFC (informational, whoever owns the service sets this, not a database step):**
@@ -242,13 +242,13 @@ Confirmed against the RFC's IMPACTS tab, which also lists which application maps
 
 ### Resolved
 - ~~Which table "Building table" refers to in the Pre-Work item "Confirm changes to Building table"~~ **Confirmed `BLD_BUILDING`**, 2026-08-19, verified against schema exports for both `BLD_BUILDING` and `BLD_BUILDING_USE`. See Pre-Work §2 for the field-level evidence.
-- ~~Locate the specific "changes submitted for the Building table" RFC~~ **Found**, 2026-08-19: `changes/Delete fields in Building table.xlsx`. Confirms a hard sequencing dependency, `NAMESTATUS` and `NAMEAPRDTE` must be added here before that RFC deletes them from `BLD_BUILDING`. See Pre-Work §2. This dependency is now tracked at the cross-ticket level in `workflow.md`'s Cross-Ticket Dependency Map.
+- ~~Locate the specific "changes submitted for the Building table" RFC~~ **Found**, 2026-08-19: `../../changes/Delete fields in Building table.xlsx`. Confirms a hard sequencing dependency, `NAMESTATUS` and `NAMEAPRDTE` must be added here before that RFC deletes them from `BLD_BUILDING`. See Pre-Work §2. This dependency is now tracked at the cross-ticket level in `../../workflow.md`'s Cross-Ticket Dependency Map.
 - ~~Whether `HRMINTRST` on the FORM tab's field list is a typo for `HERITAGE`~~ **No, it's not a typo.** Confirmed by Alex, 2026-08-19: `HRMINTRST` is the legitimate, already-existing "HRM Interest" field, unrelated to `HERITAGE`. The FORM tab's summary line simply doesn't mention `HERITAGE` even though it's a genuine add per the DATASET DETAILS tab, an incomplete summary line, not a data error. No action needed.
-- ~~That same RFC references a third one, "changes submitted for the Building Polygons"~~ **Very likely already known**, 2026-08-19: matches `Changes to BLD_building_polygon feature class.xlsx`, already tracked under TASK0320365 (`tickets/TASK0320365.md`), both live in the same `Building Polygons` network folder. Worth a quick confirmation, but not a new unlocated document.
+- ~~That same RFC references a third one, "changes submitted for the Building Polygons"~~ **Very likely already known**, 2026-08-19: matches `Changes to BLD_building_polygon feature class.xlsx`, already tracked under TASK0320365 (`../../tickets/TASK0320365.md`), both live in the same `Building Polygons` network folder. Worth a quick confirmation, but not a new unlocated document.
 
 ### Still open
 - AMO confirmation on `ASSETGRP` deletion is still outstanding; it gates the default-value item above.
-- `ROLLUPID` is also referenced as an attribute-rule candidate for the 8 building-component tables (`attribute_rules.md` §2), which depends on `BLD_building_assetpoint` having Land ID populated. Worth confirming that dependency is satisfied before those rules are built.
+- `ROLLUPID` is also referenced as an attribute-rule candidate for the 8 building-component tables (`../building_components/attribute_rules.md` §2), which depends on `BLD_building_assetpoint` having Land ID populated. Worth confirming that dependency is satisfied before those rules are built.
 - `BLD_HRM_OWNED_VW` and `BLD_HRM_INTEREST_VW` are listed as impacted by this ticket in the RFC's IMPACTS tab, but their SQL (`sql/views/`) selects only from `BLD_BUILDING_POLYGON` and `BLD_HRM_OWNED_FINAL` / `BLD_HRM_INTEREST_FINAL`, no `BLD_building_assetpoint` field appears directly. Confirm whether those `_FINAL` tables are derived from `BLD_building_assetpoint` before assuming these views need changes.
 - No ServiceNow TASK/RITM number found for "Delete fields in Building table," it's a GIS Design Authority RFC without one attached, and a note on its own DATASET DETAILS tab says it "has not been presented at GIS Design Authority yet."
 
